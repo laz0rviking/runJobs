@@ -69,7 +69,7 @@ Ai = numpy.pi*ri*ri
 ## Data set input parameters
 ## Make sure to check for specific weighting
 ## variations (e.g., the y/z variation)
-## DS5 (aa,
+## DS5 (aa,bb
 ## DS4 (x,y,z)
 ## DS1 (t-v)
 if data_set == "DS5":
@@ -146,6 +146,8 @@ if data_set == "DS5":
                               3.3E-08,\
                               3.0E-08,\
                               2.5E-08])*1e-8
+    if path_letter == "bb":
+      array_Wspec = array_Wspec/100
   else:
     print "ERROR: can't find input conditions for that voltage"
     quit()
