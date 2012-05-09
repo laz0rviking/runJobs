@@ -2,21 +2,29 @@
 
 import sys,os,numpy,shutil,subprocess
 
-## Choose your server
-server = "nyx"
-#server = "garnet"
+## If arguments aren't given correctly, print a help message
+if len(sys.argv)!=2:
+  print 'Usage: runJobs [server name, e.g. "nyx", "garnet"]'
+  sys.exit(0)
+
+## Gather server variable
+server = sys.argv[1]
+
+if not server == ("garnet" or "nyx"):
+  print "ERROR: Only built for garnet or nyx!"
+  quit()
 
 ## Choose your run!
 data_set = "DS5"
 path_letter = "aa"
-voltage = "-10"
+voltage = "00"
 path_desc = "bias"+voltage
 
 ## Choose simulation phase:
-#path_phase = "init"
-#queue_time = "12:00:00"
-path_phase = "1500"
-queue_time = "24:00:00"
+path_phase = "init"
+queue_time = "12:00:00"
+#path_phase = "1500"
+#queue_time = "24:00:00"
 
 ## Server-specific queueing params
 if server == "nyx":
