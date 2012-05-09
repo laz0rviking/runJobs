@@ -23,9 +23,15 @@ path_desc = "bias"+voltage
 
 ## Choose simulation phase:
 if path_phase == "init":
-  queue_time = "12:00:00"
+  if server == "garnet":
+    queue_time = "3:00:00"
+  else:
+    queue_time = "12:00:00"
 elif path_phase == "1500":
-  queue_time = "24:00:00"
+  if server == "garnet":
+    queue_time = "12:00:00"
+  else:
+    queue_time = "24:00:00"
 else:
   print "ERROR: phase needs to be init or 1500"
   quit()
@@ -160,7 +166,7 @@ if data_set == "DS5":
                               2.5E-08])
     if path_letter == "bb":
       array_Wspec = array_Wspec/100
-  if voltage == "00":
+  elif voltage == "00":
     array_I = numpy.array([12.194,\
                             12.107,\
                             12.016,\
@@ -235,7 +241,7 @@ if data_set == "DS5":
                                 1.2E-08])
     if path_letter == "bb":
       array_Wspec = array_Wspec/100
-  if voltage == "10":
+  elif voltage == "10":
     array_I = numpy.array([14.130,\
                            13.778,\
                            13.418,\
@@ -310,7 +316,7 @@ if data_set == "DS5":
                                 6.4E-11])
     if path_letter == "bb":
       array_Wspec = array_Wspec/100
-  if voltage == "20":
+  elif voltage == "20":
     array_I = numpy.array([17.388,\
                             16.780,\
                             16.164,\
