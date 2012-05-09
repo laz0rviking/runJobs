@@ -3,12 +3,15 @@
 import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
-if len(sys.argv)!=2:
-  print 'Usage: runJobs [server name, e.g. "nyx", "garnet"]'
+if len(sys.argv)!=5:
+  print 'Usage: runJobs [server name, e.g. "nyx", "garnet"] [path-letter, e.g. "aa", "bb"] [IC bias-voltage, e.g. "-10", "00", "20"] [phase, e.g. "init", "1500"]'
   sys.exit(0)
 
 ## Gather server variable
 server = sys.argv[1]
+path_letter = str(sys.argv[2])
+voltage = str(sys.argv[3])
+path_phase = str(sys.argv[4])
 
 if not server == ("garnet" or "nyx"):
   print "ERROR: Only built for garnet or nyx!"
@@ -16,15 +19,16 @@ if not server == ("garnet" or "nyx"):
 
 ## Choose your run!
 data_set = "DS5"
-path_letter = "aa"
-voltage = "00"
 path_desc = "bias"+voltage
 
 ## Choose simulation phase:
-path_phase = "init"
-queue_time = "12:00:00"
-#path_phase = "1500"
-#queue_time = "24:00:00"
+if path_phase == "init":
+  queue_time = "12:00:00"
+elif path_phase == "1500":
+  queue_time = "24:00:00"
+else:
+  print "ERROR: phase needs to be init or 1500"
+  quit()
 
 ## Server-specific queueing params
 if server == "nyx":
