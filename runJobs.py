@@ -13,10 +13,10 @@ voltage = "-10"
 path_desc = "bias"+voltage
 
 ## Choose simulation phase:
-path_phase = "init"
-queue_time = "12:00:00"
-#path_phase = "1500"
-#queue_time = "24:00:00"
+#path_phase = "init"
+#queue_time = "12:00:00"
+path_phase = "1500"
+queue_time = "24:00:00"
 
 ## Server-specific queueing params
 if server == "nyx":
@@ -145,7 +145,7 @@ if data_set == "DS5":
                               3.6E-08,\
                               3.3E-08,\
                               3.0E-08,\
-                              2.5E-08])*1e-8
+                              2.5E-08])
     if path_letter == "bb":
       array_Wspec = array_Wspec/100
   else:
