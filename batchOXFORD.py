@@ -8,29 +8,29 @@ if len(sys.argv)!=4:
   sys.exit(0)
 
 ## Gather variables
+data_set = "DS5"
 path_letter = sys.argv[1]
 path_desc = sys.argv[2]
 path_phase = sys.argv[3]
 
-## Choose your run!
-#path_letter = "x"
-#path_desc = "bias00"
-#path_phase = "1500"
-
-#user_name = "paul"
-#server_name = "arrakis.engin.umich.edu"
-#path_name = "/home/paul/Dropbox/Paulz\ Box/research/mpic/work/from-nyx/test-cell"
-#file_name = "plasmaout"
-
 ## Initialize arrays/paths
 toppath = os.getcwd()
 
-run_first = 1
-#run_last = 11
-run_last = 12
+## Make sure enough runs/skips occur
 ii = 0
+run_first = 1
+if data_set == "DS5":
+  run_last = 36
+  run_skip = 2
+elif data_set == "DS4":
+  run_last = 12
+  run_skip = 1
+else:
+  print "ERROR: Can't find that data set!"
+  quit()
 array_runs = range(run_first,\
-                   run_last+1)
+                   run_last+1,\
+                   run_skip)
 
 ############################
 ## Main Loop
@@ -45,18 +45,6 @@ for path_run in array_runs:
   os.chdir(mypath)
   subprocess.call("oxford", shell=True)
   os.chdir(toppath)
-
-#  print "Pushing on \"" + mypath + "\"!"
-#  if os.path.isdir(mypath):
-#    print "Copying " + file_name + ".plt"
-#    scp_in = mypath + "/" + file_name + ".plt"
-#    scp_out = "\"" + user_name + "@" + server_name + ":" + path_name + "/" + \
-#              path_letter + "-00-layfiles/" + file_name + "-" + \
-#              mypath + ".plt\""
-#    subprocess.call("scp " + scp_in + " " + scp_out, shell=True)
-#  else:
-#    print "ERROR: Directory \"" + mypath + "\" missing!"
-#    quit()
 
   ii += 1
   print ""
