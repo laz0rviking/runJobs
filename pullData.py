@@ -8,7 +8,7 @@ if len(sys.argv)!=5:
   sys.exit(0)
 
 ## Gather variables
-data_set = "DS5"
+data_set = "DS4"
 server = sys.argv[1]
 path_letter = sys.argv[2]
 path_desc = sys.argv[3]
