@@ -20,6 +20,7 @@ if not server == ("garnet" or "nyx"):
 
 ## Choose your run!
 path_desc = "bias"+voltage
+W_offset = 10
 
 ## Choose simulation phase:
 if path_phase == "init":
@@ -419,7 +420,7 @@ elif data_set == "DS4":
                                2.6,\
                                2.1,\
                                1.7,\
-                               1.2])*1e-8
+                               1.2])*1e-8/W_offset
   elif voltage == "10":
     array_I = numpy.array([5.121,\
                            4.225,\
@@ -444,7 +445,7 @@ elif data_set == "DS4":
                                3.0,\
                                2.5,\
                                2.2,\
-                               1.7])*1e-8
+                               1.7])*1e-8/W_offset
   elif voltage == "05":
     array_I = numpy.array([5.349,\
                            4.511,\
@@ -469,7 +470,7 @@ elif data_set == "DS4":
                                3.8,\
                                3.3,\
                                3.0,\
-                               2.5])*1e-8
+                               2.5])*1e-8/W_offset
   elif voltage == "00":
     array_I = numpy.array([6.922,\
                            6.610,\
@@ -494,7 +495,7 @@ elif data_set == "DS4":
                                5.4,\
                                4.7,\
                                4.2,\
-                               3.5])*1e-8/100
+                               3.5])*1e-8/W_offset
   elif voltage == "-05":
     array_I = numpy.array([7.564,\
                            7.265,\
@@ -519,7 +520,7 @@ elif data_set == "DS4":
                                5.8,\
                                5.2,\
                                4.7,\
-                               4.0])*1e-8
+                               4.0])*1e-8/W_offset
   elif voltage == "-10":
     array_I = numpy.array([7.329,\
                            7.081,\
@@ -544,7 +545,7 @@ elif data_set == "DS4":
                                6.3,\
                                5.7,\
                                5.3,\
-                               4.6])*1e-8/100
+                               4.6])*1e-8/W_offset
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
@@ -829,7 +830,7 @@ def write_pic():
         "-8 2 0.0 0	0.0	0	0.0	! symmetry line\n",\
         "\n",\
         "$REPORT_SPAN\n",\
-        "100\n",\
+        "1000\n",\
         "\n",\
         "$PIC\n",\
         "0.026 " + "%.2e" % array_ni[ii] + " 0.0    !Ion temperature, ion number density, reference potential\n",\
