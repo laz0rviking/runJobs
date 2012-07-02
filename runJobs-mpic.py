@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=6:
-  print 'Usage: runJobs [server name, e.g. "nyx", "garnet"] [data-set, e.g. "DS1", "DS5"] [path-letter, e.g. "aa", "bb"] [IC bias-voltage, e.g. "-10", "00", "20"] [phase, e.g. "init", "1500"]'
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -14,23 +14,23 @@ path_letter = str(sys.argv[3])
 voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
 
-if not server == ("garnet" or "nyx"):
-  print "ERROR: Only built for garnet or nyx!"
+if not server == "garnet" or "nyx" or "jade":
+  print "ERROR: Only built for garnet, jade, or nyx!"
   quit()
 
 ## Choose your run!
 path_desc = "bias"+voltage
-W_offset = 10
+W_offset = 100
 
 ## Choose simulation phase:
 if path_phase == "init":
-  if server == "garnet":
+  if server == "jade" or "garnet":
     queue_time = "3:00:00"
   else:
     queue_time = "12:00:00"
 elif path_phase == "1500":
-  if server == "garnet":
-    queue_time = "12:00:00"
+  if server == "jade" or "garnet":
+    queue_time = "20:00:00"
   else:
     queue_time = "24:00:00"
 else:
@@ -42,7 +42,7 @@ if server == "nyx":
   queue_ppn = "4"
   queue_name = "iainboyd"
   #queue_name = "mjkush"
-elif server == "garnet":
+elif server == "jade" or "garnet":
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
   queue_cores = "16"
@@ -67,19 +67,26 @@ array_files = ["oxford.dat",\
 
 ## Make sure enough runs/skips occur
 ii = 0
-run_first = 1
-if data_set == "DS5":
-  run_last = 36
-  run_skip = 2
-elif data_set == "DS4":
-  run_last = 12
-  run_skip = 1
-else:
-  print "ERROR: Can't find that data set!"
-  quit()
-array_runs = range(run_first,\
-                   run_last+1,\
-                   run_skip)
+
+#run_first = 1
+#
+#if data_set == "DS5":
+#  run_last = 36
+#  run_skip = 2
+#elif data_set == "DS4":
+#  run_last = 12
+#  run_skip = 1
+#else:
+#  print "ERROR: Can't find that data set!"
+#  quit()
+#
+#array_runs = range(run_first,\
+#                   run_last+1,\
+#                   run_skip)
+
+array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
+
+## Last minute parameters!
 q = 1.602e-19
 vi = 46900
 ri = 1.27e-3
@@ -714,12 +721,12 @@ def write_flow():
  
   if path_phase == "init":
     init_text = ["",\
-      "0.     0.	0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
-      "46900. 0. 	0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
+      "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
+      "46900. 0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
   elif path_phase == "1500":
     init_text = ["",\
-      "0.     0.	0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
-      "46900. 0. 	0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
+      "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
+      "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
 
   FILE.writelines(init_text)
   FILE.close()
@@ -751,7 +758,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-    elif server == "garnet":
+    elif server == "jade" or "garnet":
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -761,8 +768,8 @@ def write_pbs():
         "#PBS -l ncpus="+queue_cores+",walltime="+queue_time+"\n",\
         "#PBS -M pgiulian@umich.edu\n",\
         "#PBS -m be\n",\
+        "#PBS -j oe\n",\
         "#PBS -V\n",\
-        "#PBS -joe\n",\
         "\n",\
         "cd $PBS_O_WORKDIR\n",\
         "aprun -n "+queue_cores+" monaco\n",\
@@ -786,7 +793,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-    elif server == "garnet":
+    elif server == "jade" or "garnet":
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -796,8 +803,8 @@ def write_pbs():
         "#PBS -l ncpus="+queue_cores+",walltime="+queue_time+"\n",\
         "#PBS -M pgiulian@umich.edu\n",\
         "#PBS -m be\n",\
+        "#PBS -j oe\n",\
         "#PBS -V\n",\
-        "#PBS -joe\n",\
         "\n",\
         "cd $PBS_O_WORKDIR\n",\
         "aprun -n "+queue_cores+" monaco\n",\

@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=5:
-  print 'Usage: pullData.py [server, e.g. "garnet", "nyx"] [letter, e.g "x"] [description, e.g "bias00"] [phase, e.g "1500"]'
+  print 'Usage: pullData.py [server, e.g. "garnet", "nyx"] [letter, e.g "x"] [description, e.g "b00"] [phase, e.g "1500"]'
   sys.exit(0)
 
 ## Gather variables
@@ -41,21 +41,25 @@ toppath = os.getcwd()
 
 ## Make sure enough runs/skips occur
 ii = 0
-run_first = 8
-run_last = 8
-run_skip = 1
-#if data_set == "DS5":
-#  run_last = 36
-#  run_skip = 2
-#elif data_set == "DS4":
-#  run_last = 12
-#  run_skip = 1
-#else:
-#  print "ERROR: Can't find that data set!"
-#  quit()
+
+run_first = 1
+
+if data_set == "DS5":
+  run_last = 36
+  run_skip = 2
+elif data_set == "DS4":
+  run_last = 12
+  run_skip = 1
+else:
+  print "ERROR: Can't find that data set!"
+  quit()
+
 array_runs = range(run_first,\
                    run_last+1,\
                    run_skip)
+
+#array_runs = [1, 4, 8]
+#array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
 
 ############################
 ## Main Loop
