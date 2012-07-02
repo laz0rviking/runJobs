@@ -19,7 +19,7 @@ if not server == "garnet" or "nyx" or "jade":
   quit()
 
 ## Choose your run!
-path_desc = "bias"+voltage
+path_desc = "b"+voltage
 W_offset = 100
 
 ## Choose simulation phase:
@@ -68,23 +68,26 @@ array_files = ["oxford.dat",\
 ## Make sure enough runs/skips occur
 ii = 0
 
-#run_first = 1
-#
-#if data_set == "DS5":
-#  run_last = 36
-#  run_skip = 2
-#elif data_set == "DS4":
-#  run_last = 12
-#  run_skip = 1
-#else:
-#  print "ERROR: Can't find that data set!"
-#  quit()
-#
-#array_runs = range(run_first,\
-#                   run_last+1,\
-#                   run_skip)
+run_first = 1
 
-array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
+if data_set == "DS5":
+  run_last = 36
+  run_skip = 2
+elif data_set == "DS4":
+  run_last = 12
+  run_skip = 1
+elif data_set == "DS1":
+  run_last = 11
+  run_skip = 1
+else:
+  print "ERROR: Can't find that data set!"
+  quit()
+
+array_runs = range(run_first,\
+                   run_last+1,\
+                   run_skip)
+
+#array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
 
 ## Last minute parameters!
 q = 1.602e-19
@@ -556,6 +559,29 @@ elif data_set == "DS4":
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
+elif data_set == "DS1":
+  array_I = numpy.array([16.73,\
+                         16.70,\
+                         16.63,\
+                         16.52,\
+                         16.23,\
+                         15.81,\
+                         14.19,\
+                         13.07,\
+                         11.55,\
+                         9.59,\
+                         7.26])*1e-9
+  array_Wspec = numpy.array([10.,\
+                             10.,\
+                             9.9,\
+                             9.9,\
+                             9.7,\
+                             9.5,\
+                             8.5,\
+                             7.8,\
+                             6.9,\
+                             5.7,\
+                             4.3])*1e-8/W_offset
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -660,6 +686,30 @@ elif data_set == "DS4":
                          1.6e+9,\
                          1.8e+9,\
                          2.1e+9])*10*3
+elif data_set == "DS1":
+  array_P = numpy.array([2.07E-03,\
+                         9.61E-03,\
+                         2.45E-02,\
+                         4.85E-02,\
+                         1.16E-01,\
+                         2.13E-01,\
+                         6.18E-01,\
+                         9.26E-01,\
+                         1.39E+00,\
+                         2.08E+00,\
+                         3.13E+00])/133.32
+
+  array_W = numpy.array([1.0E+08,\
+                         4.6E+08,\
+                         1.2E+09,\
+                         2.3E+09,\
+                         5.6E+09,\
+                         1.0E+10,\
+                         3.0E+10,\
+                         4.5E+10,\
+                         6.7E+10,\
+                         1.0E+11,\
+                         1.5E+11])
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
