@@ -14,7 +14,7 @@ path_letter = str(sys.argv[3])
 voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
 
-if not ("garnet" or "nyx" or "jade") in server:
+if ("garnet" or "nyx" or "jade") not in server:
   print "ERROR: Only built for garnet, jade, or nyx!"
   quit()
 
