@@ -26,7 +26,7 @@ W_offset = 100
 ## THIS ISN"T CHOOSING RIGHT TIMES
 if "init" in path_phase:
   if ("jade" or "garnet") in server:
-    queue_time = "5:00:00"
+    queue_time = "4:00:00"
   elif "nyx" in server:
     queue_time = "12:00:00"
 elif "1500" in path_phase:
@@ -48,7 +48,10 @@ elif ("jade" or "garnet") in server:
   ## For Garnet this is 16 cores/node
   queue_cores = "16"
   queue_name = "AFPRD24930028"
-  queue_type = "standard"
+  if "init" in path_phase:
+    queue_type = "background"
+  elif "1500" in path_phase:
+    queue_type = "standard"
 else:
   print "ERROR: Can't find that server!"
   quit()
