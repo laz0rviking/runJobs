@@ -25,25 +25,25 @@ W_offset = 100
 ## Choose simulation phase:
 ## THIS ISN"T CHOOSING RIGHT TIMES
 if "init" in path_phase:
-  if server == "jade" or "garnet":
+  if ("jade" or "garnet") in server:
     queue_time = "3:00:00"
-  else:
+  elif "nyx" in server:
     queue_time = "12:00:00"
-elif path_phase == "1500":
-  if server == "jade" or "garnet":
+elif "1500" in path_phase:
+  if ("jade" or "garnet") in server:
     queue_time = "20:00:00"
-  else:
+  elif "nyx" in server:
     queue_time = "24:00:00"
 else:
   print "ERROR: phase needs to be init or 1500"
   quit()
 
 ## Server-specific queueing params
-if server == "nyx":
+if "nyx" in server:
   queue_ppn = "4"
   queue_name = "iainboyd"
   #queue_name = "mjkush"
-elif server == "jade" or "garnet":
+elif ("jade" or "garnet") in server:
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
   queue_cores = "16"
@@ -71,13 +71,13 @@ ii = 0
 
 run_first = 1
 
-if data_set == "DS5":
+if "DS5" in data_set:
   run_last = 34 # brought down from 36
   run_skip = 3
-elif data_set == "DS4":
+elif "DS4" in data_set:
   run_last = 12
   run_skip = 1
-elif data_set == "DS1":
+elif "DS1" in data_set:
   run_last = 11
   run_skip = 1
 else:
@@ -102,7 +102,7 @@ Ai = numpy.pi*ri*ri
 ## DS5 (aa,bb
 ## DS4 (x,y,z)
 ## DS1 (t-v)
-if data_set == "DS5":
+if "DS5" in data_set:
   if voltage == "-10":
     array_I = numpy.array([12.440,\
                            12.289,\
@@ -206,7 +206,7 @@ if data_set == "DS5":
   else:
     print "ERROR: can't find input conditions for that voltage"
     quit()
-elif data_set == "DS4":
+elif "DS4" in  data_set:
   if voltage == "20":
     array_I = numpy.array([5.292,\
                            4.314,\
@@ -360,7 +360,7 @@ elif data_set == "DS4":
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
-elif data_set == "DS1":
+elif "DS1" in data_set:
   array_I = numpy.array([16.73,\
                          16.70,\
                          16.63,\
@@ -387,7 +387,7 @@ else:
   print "ERROR: Can't find that Data Set!"
   quit()
 
-if data_set == "DS5":
+if "DS5" in data_set:
   array_P = numpy.array([1.53E-02,\
                          4.93E-02,\
                          9.53E-02,\
@@ -413,7 +413,7 @@ if data_set == "DS5":
                          2.7E+11,\
                          4.8E+11,\
                          6.0E+11])/5.0
-elif data_set == "DS4":
+elif "DS4" in data_set:
   array_P = numpy.array([7.00e-2,\
                          1.33e-1,\
                          1.99e-1,\
@@ -439,7 +439,7 @@ elif data_set == "DS4":
                          1.6e+9,\
                          1.8e+9,\
                          2.1e+9])*10*3
-elif data_set == "DS1":
+elif "DS1" in data_set:
   array_P = numpy.array([2.07E-03,\
                          9.61E-03,\
                          2.45E-02,\
@@ -481,7 +481,7 @@ def write_dsmc():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
 
-  if path_phase == "init":
+  if "init" in path_phase:
     init_text = ["",\
         "3.0e-05    ! Reference time step\n",\
         "%.1e" % array_W[ii] + "    ! 1.5e9 Reference particle weight (Nreal/Nmodel)\n",\
@@ -494,7 +494,7 @@ def write_dsmc():
         "100000000  ! Interval: Particle domain decompositon\n",\
         "1E-14      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
-  elif path_phase == "1500":
+  elif "1500" in path_phase:
     init_text = ["",\
         "3.0e-08    ! Reference time step\n",\
         "%.1e" % array_W[ii] + "    ! 1.5e9 Reference particle weight (Nreal/Nmodel)\n",\
@@ -522,11 +522,11 @@ def write_flow():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
  
-  if path_phase == "init":
+  if "init" in path_phase:
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
-  elif path_phase == "1500":
+  elif "1500" in path_phase:
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
@@ -545,122 +545,14 @@ def write_pbs():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
 
-  if path_phase == "init":
-    if server == "nyx":
-      init_text = ["",\
-        "#!/bin/sh\n",\
-        "#PBS -S /bin/sh\n",\
-        "#PBS -A "+queue_name+"\n",\
-        "#PBS -N "+path_letter+"i"+path_desc+"R"+str(path_run).zfill(2)+"\n",\
-        "#PBS -l nodes=1:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
-        "#PBS -M pgiulian@umich.edu\n",\
-        "#PBS -m abe\n",\
-        "#PBS -V\n",\
-        "#PBS -joe\n",\
-        "\n",\
-        "cd $PBS_O_WORKDIR\n",\
-        "mpirun monaco\n",\
-        "\n"]
-    elif server == "jade" or "garnet":
-      init_text = ["",\
-        "#!/bin/sh\n",\
-        "#PBS -S /bin/sh\n",\
-        "#PBS -A "+queue_name+"\n",\
-        "#PBS -q "+queue_type+"\n",\
-        "#PBS -N "+path_letter+"i"+path_desc+"R"+str(path_run).zfill(2)+"\n",\
-        "#PBS -l ncpus="+queue_cores+",walltime="+queue_time+"\n",\
-        "#PBS -M pgiulian@umich.edu\n",\
-        "#PBS -m be\n",\
-        "#PBS -j oe\n",\
-        "#PBS -V\n",\
-        "\n",\
-        "cd $PBS_O_WORKDIR\n",\
-        "aprun -n "+queue_cores+" monaco\n",\
-        "\n"]
-    else:
-      print "ERROR: Can't write pbs.sh for that server!"
-      quit()
-  elif path_phase == "1500":
-    if server == "nyx":
-      init_text = ["",\
-        "#!/bin/sh\n",\
-        "#PBS -S /bin/sh\n",\
-        "#PBS -A "+queue_name+"\n",\
-        "#PBS -N "+path_letter+path_desc+"R"+str(path_run).zfill(2)+"\n",\
-        "#PBS -l nodes=1:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
-        "#PBS -M pgiulian@umich.edu\n",\
-        "#PBS -m abe\n",\
-        "#PBS -V\n",\
-        "#PBS -joe\n",\
-        "\n",\
-        "cd $PBS_O_WORKDIR\n",\
-        "mpirun monaco\n",\
-        "\n"]
-    elif server == "jade" or "garnet":
-      init_text = ["",\
-        "#!/bin/sh\n",\
-        "#PBS -S /bin/sh\n",\
-        "#PBS -A "+queue_name+"\n",\
-        "#PBS -q "+queue_type+"\n",\
-        "#PBS -N "+path_letter+path_desc+"R"+str(path_run).zfill(2)+"\n",\
-        "#PBS -l ncpus="+queue_cores+",walltime="+queue_time+"\n",\
-        "#PBS -M pgiulian@umich.edu\n",\
-        "#PBS -m be\n",\
-        "#PBS -j oe\n",\
-        "#PBS -V\n",\
-        "\n",\
-        "cd $PBS_O_WORKDIR\n",\
-        "aprun -n "+queue_cores+" monaco\n",\
-        "\n"]
-    else:
-      print "ERROR: Can't write pbs.sh for that server!"
-      quit()
-
-  FILE.writelines(init_text)
-  FILE.close()
-  print filename + " created!"
-  return
-
-##########################
-## Write pic.cfg
-##########################
-def write_pic():
-  filename = "pic.cfg"
-
-  if path_phase == "init":
-    PATH = mypath + "/" + filename
-    FILE = open(PATH,"w")
-    init_text = ["",\
-        "$PLASMABCS 6\n",\
-        "-4 2 0.0 0	0.0	0	0.0	! outflow\n",\
-        "-1 1 0.0 0	0.0	0	0.0	! EP top+bottom\n",\
-        "-1 1 "+voltage+".0 0	0.0	0	0.0	! IC\n",\
-        "-1 1 0.0 0	0.0	0	0.0	! AF\n",\
-        "-2 2 0.0 0	0.0	0	0.0	! inlet\n",\
-        "-8 2 0.0 0	0.0	0	0.0	! symmetry line\n",\
-        "\n",\
-        "$REPORT_SPAN\n",\
-        "1000\n",\
-        "\n",\
-        "$PIC\n",\
-        "0.026 " + "%.2e" % array_ni[ii] + " 0.0    !Ion temperature, ion number density, reference potential\n",\
-        "\n",\
-        "$MERGE_SMALL_NEUTRAL 1.0\n",\
-        "\n",\
-        "$PLASMA_POT_METHOD\n",\
-        "99                    ! e-method = 0: Boltzmann, 2: detailed model\n",\
-        "\n",\
-        "$BEGIN_APPLY_E\n",\
-        "60000               ! E_begin: after this step, electricity field is applied\n",\
-        "\n",\
-        "BEAM_DIVERGENCE\n",\
-        "0.0 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
-        "\n",\
+  if "init" in path_phase:
+    if "nyx" in server:
+???MANY LINES MISSING
         "$END\n"]
     FILE.writelines(init_text)
     FILE.close()
     print filename + " created!"
-  elif path_phase == "1500":
+  elif "1500" in path_phase:
     print "Skipping " + filename + "..."
 
   return
@@ -671,7 +563,7 @@ def write_pic():
 # Need to write something to copy all of the
 # other necessary files into
 def copy_files():
-  if path_phase == "init":
+  if "init" in path_phase:
     for filename in array_files:
       if not os.path.isfile(oldpath + "/" + filename):
         print "ERROR: Where is \"" + filename + "\"?"
@@ -679,7 +571,7 @@ def copy_files():
       else:
         shutil.copyfile(oldpath + "/" + filename, mypath + "/" + filename)
       print "Copied " + filename + "!"
-  elif path_phase == "1500":
+  elif "1500" in path_phase:
     print "Skipping copying of init files..."
   return
 
@@ -696,14 +588,14 @@ for path_run in array_runs:
   print "Working on \"" + mypath + "\"!"
 
   if not os.path.isdir(mypath):
-    if path_phase == "1500":
+    if "1500" in path_phase:
       print "Copying init version..."
       subprocess.call("cp -r " + path_letter + \
                       "-" + path_desc + \
                       "-init-" + "R" + str(path_run).zfill(2) + \
                       "/" + " " + mypath + "/", \
                       shell=True)
-    elif path_phase == "init":
+    elif "init" in path_phase:
       print "Folder created!"
       os.makedirs(mypath)
   else:
