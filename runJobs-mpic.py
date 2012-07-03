@@ -24,6 +24,7 @@ path_desc = "b"+voltage
 W_offset = 100
 
 ## Choose simulation phase:
+## THIS ISN"T CHOOSING RIGHT TIMES
 if path_phase == "init":
   if server == "jade" or "garnet":
     queue_time = "3:00:00"
