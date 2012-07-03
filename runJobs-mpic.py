@@ -14,10 +14,9 @@ path_letter = str(sys.argv[3])
 voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
 
-## I think this is broken...
-#if not server == "garnet" or "nyx" or "jade":
-#  print "ERROR: Only built for garnet, jade, or nyx!"
-#  quit()
+if not ("garnet" or "nyx" or "jade") in server:
+  print "ERROR: Only built for garnet, jade, or nyx!"
+  quit()
 
 ## Choose your run!
 path_desc = "b"+voltage
@@ -25,7 +24,7 @@ W_offset = 100
 
 ## Choose simulation phase:
 ## THIS ISN"T CHOOSING RIGHT TIMES
-if path_phase == "init":
+if "init" in path_phase:
   if server == "jade" or "garnet":
     queue_time = "3:00:00"
   else:
