@@ -14,36 +14,35 @@ path_letter = str(sys.argv[3])
 voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
 
-if not ("garnet" or "nyx" or "jade") in server:
-  print "ERROR: Only built for garnet, jade, or nyx!"
-  quit()
+#if not server == "garnet" or "nyx" or "jade":
+#  print "ERROR: Only built for garnet, jade, or nyx!"
+#  quit()
 
 ## Choose your run!
 path_desc = "b"+voltage
 W_offset = 100
 
 ## Choose simulation phase:
-## THIS ISN"T CHOOSING RIGHT TIMES
-if "init" in path_phase:
-  if ("jade" or "garnet") in server:
+if path_phase == "init":
+  if server == "jade" or "garnet":
     queue_time = "3:00:00"
-  elif "nyx" in server:
+  else:
     queue_time = "12:00:00"
-elif "1500" in path_phase:
-  if ("jade" or "garnet") in server:
+elif path_phase == "1500":
+  if server == "jade" or "garnet":
     queue_time = "20:00:00"
-  elif "nyx" in server:
+  else:
     queue_time = "24:00:00"
 else:
   print "ERROR: phase needs to be init or 1500"
   quit()
 
 ## Server-specific queueing params
-if "nyx" in server:
+if server == "nyx":
   queue_ppn = "4"
   queue_name = "iainboyd"
   #queue_name = "mjkush"
-elif ("jade" or "garnet") in server:
+elif server == "jade" or "garnet":
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
   queue_cores = "16"
@@ -71,14 +70,11 @@ ii = 0
 
 run_first = 1
 
-if "DS5" in data_set:
-  run_last = 34 # brought down from 36
-  run_skip = 3
-elif "DS4" in data_set:
+if data_set == "DS5":
+  run_last = 36
+  run_skip = 2
+elif data_set == "DS4":
   run_last = 12
-  run_skip = 1
-elif "DS1" in data_set:
-  run_last = 11
   run_skip = 1
 else:
   print "ERROR: Can't find that data set!"
@@ -88,6 +84,7 @@ array_runs = range(run_first,\
                    run_last+1,\
                    run_skip)
 
+#array_runs = [1, 4, 8]
 #array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
 
 ## Last minute parameters!
@@ -102,111 +99,311 @@ Ai = numpy.pi*ri*ri
 ## DS5 (aa,bb
 ## DS4 (x,y,z)
 ## DS1 (t-v)
-if "DS5" in data_set:
+if data_set == "DS5":
   if voltage == "-10":
     array_I = numpy.array([12.440,\
-                           12.289,\
-                           12.088,\
-                           11.746,\
-                           11.283,\
-                           10.820,\
-                           10.376,\
-                           9.856,\
-                           8.270,\
-                           7.615,\
-                           5.205,\
-                           4.160])*1e-9
+                          12.381,\
+                          12.319,\
+                          12.289,\
+                          12.260,\
+                          12.167,\
+                          12.088,\
+                          12.016,\
+                          11.893,\
+                          11.746,\
+                          11.595,\
+                          11.438,\
+                          11.283,\
+                          11.138,\
+                          10.972,\
+                          10.820,\
+                          10.684,\
+                          10.499,\
+                          10.376,\
+                          10.219,\
+                          10.032,\
+                          9.856,\
+                          9.248,\
+                          8.875,\
+                          8.270,\
+                          8.108,\
+                          7.865,\
+                          7.615,\
+                          6.660,\
+                          5.865,\
+                          5.205,\
+                          4.572,\
+                          4.508,\
+                          4.160,\
+                          3.674,\
+                          3.081])*1e-9
     array_Wspec = numpy.array([1.0E-07,\
-                               9.9E-08,\
-                               9.7E-08,\
-                               9.4E-08,\
-                               9.1E-08,\
-                               8.7E-08,\
-                               8.3E-08,\
-                               7.9E-08,\
-                               6.6E-08,\
-                               6.1E-08,\
-                               4.2E-08,\
-                               3.3E-08])/W_offset
+                              1.0E-07,\
+                              9.9E-08,\
+                              9.9E-08,\
+                              9.9E-08,\
+                              9.8E-08,\
+                              9.7E-08,\
+                              9.7E-08,\
+                              9.6E-08,\
+                              9.4E-08,\
+                              9.3E-08,\
+                              9.2E-08,\
+                              9.1E-08,\
+                              9.0E-08,\
+                              8.8E-08,\
+                              8.7E-08,\
+                              8.6E-08,\
+                              8.4E-08,\
+                              8.3E-08,\
+                              8.2E-08,\
+                              8.1E-08,\
+                              7.9E-08,\
+                              7.4E-08,\
+                              7.1E-08,\
+                              6.6E-08,\
+                              6.5E-08,\
+                              6.3E-08,\
+                              6.1E-08,\
+                              5.4E-08,\
+                              4.7E-08,\
+                              4.2E-08,\
+                              3.7E-08,\
+                              3.6E-08,\
+                              3.3E-08,\
+                              3.0E-08,\
+                              2.5E-08])
+    if path_letter == "bb":
+      array_Wspec = array_Wspec/100
   elif voltage == "00":
     array_I = numpy.array([12.194,\
-                           11.974,\
-                           11.681,\
-                           11.190,\
-                           10.537,\
-                           9.897,\
-                           9.296,\
-                           8.607,\
-                           6.620,\
-                           5.851,\
-                           3.311,\
-                           2.368])*1e-9
+                            12.107,\
+                            12.016,\
+                            11.974,\
+                            11.931,\
+                            11.795,\
+                            11.681,\
+                            11.577,\
+                            11.400,\
+                            11.190,\
+                            10.976,\
+                            10.754,\
+                            10.537,\
+                            10.335,\
+                            10.105,\
+                            9.897,\
+                            9.711,\
+                            9.460,\
+                            9.296,\
+                            9.085,\
+                            8.838,\
+                            8.607,\
+                            7.825,\
+                            7.358,\
+                            6.620,\
+                            6.426,\
+                            6.141,\
+                            5.851,\
+                            4.788,\
+                            3.959,\
+                            3.311,\
+                            2.727,\
+                            2.670,\
+                            2.368,\
+                            1.966,\
+                            1.511])*1e-9
     array_Wspec = numpy.array([1.0E-07,\
-                               9.8E-08,\
-                               9.6E-08,\
-                               9.2E-08,\
-                               8.6E-08,\
-                               8.1E-08,\
-                               7.6E-08,\
-                               7.1E-08,\
-                               5.4E-08,\
-                               4.8E-08,\
-                               2.7E-08,\
-                               1.9E-08])/W_offset
+                                9.9E-08,\
+                                9.9E-08,\
+                                9.8E-08,\
+                                9.8E-08,\
+                                9.7E-08,\
+                                9.6E-08,\
+                                9.5E-08,\
+                                9.3E-08,\
+                                9.2E-08,\
+                                9.0E-08,\
+                                8.8E-08,\
+                                8.6E-08,\
+                                8.5E-08,\
+                                8.3E-08,\
+                                8.1E-08,\
+                                8.0E-08,\
+                                7.8E-08,\
+                                7.6E-08,\
+                                7.5E-08,\
+                                7.2E-08,\
+                                7.1E-08,\
+                                6.4E-08,\
+                                6.0E-08,\
+                                5.4E-08,\
+                                5.3E-08,\
+                                5.0E-08,\
+                                4.8E-08,\
+                                3.9E-08,\
+                                3.2E-08,\
+                                2.7E-08,\
+                                2.2E-08,\
+                                2.2E-08,\
+                                1.9E-08,\
+                                1.6E-08,\
+                                1.2E-08])
+    if path_letter == "bb":
+      array_Wspec = array_Wspec/100
   elif voltage == "10":
     array_I = numpy.array([14.130,\
+                           13.778,\
+                           13.418,\
                            13.250,\
+                           13.084,\
+                           12.567,\
                            12.146,\
+                           11.770,\
+                           11.148,\
                            10.441,\
+                           9.754,\
+                           9.078,\
                            8.448,\
+                           7.892,\
+                           7.290,\
                            6.776,\
+                           6.338,\
+                           5.780,\
                            5.434,\
+                           5.013,\
+                           4.549,\
                            4.144,\
+                           2.963,\
+                           2.386,\
                            1.645,\
+                           1.481,\
+                           1.262,\
                            1.065,\
+                           0.525,\
+                           0.269,\
                            0.143,\
-                           0.044])*1e-9
+                           0.072,\
+                           0.067,\
+                           0.044,\
+                           0.023,\
+                           0.009])*1e-9
     array_Wspec = numpy.array([1.0E-07,\
-                               9.4E-08,\
-                               8.6E-08,\
-                               7.4E-08,\
-                               6.0E-08,\
-                               4.8E-08,\
-                               3.8E-08,\
-                               2.9E-08,\
-                               1.2E-08,\
-                               7.5E-09,\
-                               1.0E-09,\
-                               3.1E-10])/W_offset
+                                9.8E-08,\
+                                9.5E-08,\
+                                9.4E-08,\
+                                9.3E-08,\
+                                8.9E-08,\
+                                8.6E-08,\
+                                8.3E-08,\
+                                7.9E-08,\
+                                7.4E-08,\
+                                6.9E-08,\
+                                6.4E-08,\
+                                6.0E-08,\
+                                5.6E-08,\
+                                5.2E-08,\
+                                4.8E-08,\
+                                4.5E-08,\
+                                4.1E-08,\
+                                3.8E-08,\
+                                3.5E-08,\
+                                3.2E-08,\
+                                2.9E-08,\
+                                2.1E-08,\
+                                1.7E-08,\
+                                1.2E-08,\
+                                1.0E-08,\
+                                8.9E-09,\
+                                7.5E-09,\
+                                3.7E-09,\
+                                1.9E-09,\
+                                1.0E-09,\
+                                5.1E-10,\
+                                4.8E-10,\
+                                3.1E-10,\
+                                1.6E-10,\
+                                6.4E-11])
+    if path_letter == "bb":
+      array_Wspec = array_Wspec/100
   elif voltage == "20":
     array_I = numpy.array([17.388,\
-                           15.878,\
-                           14.043,\
-                           11.341,\
-                           8.408,\
-                           6.157,\
-                           4.509,\
-                           3.074,\
-                           0.833,\
-                           0.451,\
-                           0.027,\
-                           0.005])*1e-9
+                            16.780,\
+                            16.164,\
+                            15.878,\
+                            15.598,\
+                            14.734,\
+                            14.043,\
+                            13.431,\
+                            12.441,\
+                            11.341,\
+                            10.301,\
+                            9.307,\
+                            8.408,\
+                            7.638,\
+                            6.827,\
+                            6.157,\
+                            5.603,\
+                            4.920,\
+                            4.509,\
+                            4.023,\
+                            3.507,\
+                            3.074,\
+                            1.914,\
+                            1.409,\
+                            0.833,\
+                            0.719,\
+                            0.573,\
+                            0.451,\
+                            0.166,\
+                            0.065,\
+                            0.027,\
+                            0.010,\
+                            0.009,\
+                            0.005,\
+                            0.002,\
+                            0.001])*1e-9
     array_Wspec = numpy.array([1.0E-07,\
+                               9.7E-08,\
+                               9.3E-08,\
                                9.1E-08,\
+                               9.0E-08,\
+                               8.5E-08,\
                                8.1E-08,\
+                               7.7E-08,\
+                               7.2E-08,\
                                6.5E-08,\
+                               5.9E-08,\
+                               5.4E-08,\
                                4.8E-08,\
+                               4.4E-08,\
+                               3.9E-08,\
                                3.5E-08,\
+                               3.2E-08,\
+                               2.8E-08,\
                                2.6E-08,\
+                               2.3E-08,\
+                               2.0E-08,\
                                1.8E-08,\
+                               1.1E-08,\
+                               8.1E-09,\
                                4.8E-09,\
+                               4.1E-09,\
+                               3.3E-09,\
                                2.6E-09,\
+                               9.6E-10,\
+                               3.7E-10,\
                                1.5E-10,\
-                               2.9E-11])/W_offset
+                               5.8E-11,\
+                               5.2E-11,\
+                               2.9E-11,\
+                               1.1E-11,\
+                               3.1E-12])
+    if path_letter == "bb":
+      array_Wspec = array_Wspec/100
   else:
     print "ERROR: can't find input conditions for that voltage"
     quit()
-elif "DS4" in  data_set:
+elif data_set == "DS4":
   if voltage == "20":
     array_I = numpy.array([5.292,\
                            4.314,\
@@ -360,60 +557,85 @@ elif "DS4" in  data_set:
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
-elif "DS1" in data_set:
-  array_I = numpy.array([16.73,\
-                         16.70,\
-                         16.63,\
-                         16.52,\
-                         16.23,\
-                         15.81,\
-                         14.19,\
-                         13.07,\
-                         11.55,\
-                         9.59,\
-                         7.26])*1e-9
-  array_Wspec = numpy.array([10.,\
-                             10.,\
-                             9.9,\
-                             9.9,\
-                             9.7,\
-                             9.5,\
-                             8.5,\
-                             7.8,\
-                             6.9,\
-                             5.7,\
-                             4.3])*1e-8/W_offset
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
 
-if "DS5" in data_set:
+if data_set == "DS5":
   array_P = numpy.array([1.53E-02,\
+                         2.87E-02,\
+                         4.27E-02,\
                          4.93E-02,\
+                         5.60E-02,\
+                         7.73E-02,\
                          9.53E-02,\
+                         1.12E-01,\
+                         1.41E-01,\
                          1.75E-01,\
+                         2.11E-01,\
+                         2.49E-01,\
                          2.87E-01,\
+                         3.23E-01,\
+                         3.65E-01,\
                          4.04E-01,\
+                         4.39E-01,\
+                         4.88E-01,\
                          5.21E-01,\
+                         5.63E-01,\
+                         6.15E-01,\
                          6.64E-01,\
+                         8.41E-01,\
+                         9.56E-01,\
                          1.15E+00,\
+                         1.21E+00,\
+                         1.29E+00,\
                          1.38E+00,\
+                         1.76E+00,\
+                         2.11E+00,\
                          2.44E+00,\
-                         3.07E+00])/133.32
+                         2.80E+00,\
+                         2.84E+00,\
+                         3.07E+00,\
+                         3.41E+00,\
+                         3.90E+00])/133.32
 
   array_W = numpy.array([3.0E+09,\
+                         5.6E+09,\
+                         8.3E+09,\
                          9.7E+09,\
+                         1.1E+10,\
+                         1.5E+10,\
                          1.9E+10,\
+                         2.2E+10,\
+                         2.8E+10,\
                          3.4E+10,\
+                         4.1E+10,\
+                         4.9E+10,\
                          5.6E+10,\
+                         6.3E+10,\
+                         7.1E+10,\
                          7.9E+10,\
+                         8.6E+10,\
+                         9.5E+10,\
                          1.0E+11,\
+                         1.1E+11,\
+                         1.2E+11,\
                          1.3E+11,\
+                         1.6E+11,\
+                         1.9E+11,\
                          2.3E+11,\
+                         2.4E+11,\
+                         2.5E+11,\
                          2.7E+11,\
+                         3.4E+11,\
+                         4.1E+11,\
                          4.8E+11,\
-                         6.0E+11])/5.0
-elif "DS4" in data_set:
+                         5.5E+11,\
+                         5.6E+11,\
+                         6.0E+11,\
+                         6.7E+11,\
+                         7.6E+11])/5
+elif data_set == "DS4":
   array_P = numpy.array([7.00e-2,\
                          1.33e-1,\
                          1.99e-1,\
@@ -439,30 +661,6 @@ elif "DS4" in data_set:
                          1.6e+9,\
                          1.8e+9,\
                          2.1e+9])*10*3
-elif "DS1" in data_set:
-  array_P = numpy.array([2.07E-03,\
-                         9.61E-03,\
-                         2.45E-02,\
-                         4.85E-02,\
-                         1.16E-01,\
-                         2.13E-01,\
-                         6.18E-01,\
-                         9.26E-01,\
-                         1.39E+00,\
-                         2.08E+00,\
-                         3.13E+00])/133.32
-
-  array_W = numpy.array([1.0E+08,\
-                         4.6E+08,\
-                         1.2E+09,\
-                         2.3E+09,\
-                         5.6E+09,\
-                         1.0E+10,\
-                         3.0E+10,\
-                         4.5E+10,\
-                         6.7E+10,\
-                         1.0E+11,\
-                         1.5E+11])
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -481,7 +679,7 @@ def write_dsmc():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
 
-  if "init" in path_phase:
+  if path_phase == "init":
     init_text = ["",\
         "3.0e-05    ! Reference time step\n",\
         "%.1e" % array_W[ii] + "    ! 1.5e9 Reference particle weight (Nreal/Nmodel)\n",\
@@ -494,7 +692,7 @@ def write_dsmc():
         "100000000  ! Interval: Particle domain decompositon\n",\
         "1E-14      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
-  elif "1500" in path_phase:
+  elif path_phase == "1500":
     init_text = ["",\
         "3.0e-08    ! Reference time step\n",\
         "%.1e" % array_W[ii] + "    ! 1.5e9 Reference particle weight (Nreal/Nmodel)\n",\
@@ -522,11 +720,11 @@ def write_flow():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
  
-  if "init" in path_phase:
+  if path_phase == "init":
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
-  elif "1500" in path_phase:
+  elif path_phase == "1500":
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
@@ -545,8 +743,8 @@ def write_pbs():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
 
-  if "init" in path_phase:
-    if "nyx" in server:
+  if path_phase == "init":
+    if server == "nyx":
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -561,7 +759,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-    elif ("jade" or "garnet") in server:
+    elif server == "jade" or "garnet":
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -580,8 +778,8 @@ def write_pbs():
     else:
       print "ERROR: Can't write pbs.sh for that server!"
       quit()
-  elif "1500" in path_phase:
-    if "nyx" in server:
+  elif path_phase == "1500":
+    if server == "nyx":
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -596,7 +794,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-    elif ("jade" or "garnet") in server:
+    elif server == "jade" or "garnet":
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -627,7 +825,7 @@ def write_pbs():
 def write_pic():
   filename = "pic.cfg"
 
-  if "init" in path_phase:
+  if path_phase == "init":
     PATH = mypath + "/" + filename
     FILE = open(PATH,"w")
     init_text = ["",\
@@ -660,7 +858,7 @@ def write_pic():
     FILE.writelines(init_text)
     FILE.close()
     print filename + " created!"
-  elif "1500" in path_phase:
+  elif path_phase == "1500":
     print "Skipping " + filename + "..."
 
   return
@@ -671,7 +869,7 @@ def write_pic():
 # Need to write something to copy all of the
 # other necessary files into
 def copy_files():
-  if "init" in path_phase:
+  if path_phase == "init":
     for filename in array_files:
       if not os.path.isfile(oldpath + "/" + filename):
         print "ERROR: Where is \"" + filename + "\"?"
@@ -679,7 +877,7 @@ def copy_files():
       else:
         shutil.copyfile(oldpath + "/" + filename, mypath + "/" + filename)
       print "Copied " + filename + "!"
-  elif "1500" in path_phase:
+  elif path_phase == "1500":
     print "Skipping copying of init files..."
   return
 
@@ -696,14 +894,14 @@ for path_run in array_runs:
   print "Working on \"" + mypath + "\"!"
 
   if not os.path.isdir(mypath):
-    if "1500" in path_phase:
+    if path_phase == "1500":
       print "Copying init version..."
       subprocess.call("cp -r " + path_letter + \
                       "-" + path_desc + \
                       "-init-" + "R" + str(path_run).zfill(2) + \
                       "/" + " " + mypath + "/", \
                       shell=True)
-    elif "init" in path_phase:
+    elif path_phase == "init":
       print "Folder created!"
       os.makedirs(mypath)
   else:
