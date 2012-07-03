@@ -3,16 +3,16 @@
 import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
-if len(sys.argv)!=5:
-  print 'Usage: pullData.py [server, e.g. "garnet", "nyx"] [letter, e.g "x"] [description, e.g "b00"] [phase, e.g "1500"]'
+if len(sys.argv)!=6:
+  print 'Usage: pullData.py [server, e.g. "garnet", "nyx"] [data_set, "DS1/DS4/DS5"] [letter, e.g "x"] [description, e.g "b00"] [phase, e.g "1500"]'
   sys.exit(0)
 
 ## Gather variables
-data_set = "DS4"
 server = sys.argv[1]
-path_letter = sys.argv[2]
-path_desc = sys.argv[3]
-path_phase = sys.argv[4]
+data_set = str(sys.argv[2])
+path_letter = str(sys.argv[3])
+path_desc = sys.argv[4]
+path_phase = str(sys.argv[5])
 
 if server == "garnet":
   command_name = "/usr/local/ossh/bin/scp"
@@ -45,10 +45,13 @@ ii = 0
 run_first = 1
 
 if data_set == "DS5":
-  run_last = 36
-  run_skip = 2
+  run_last = 34 # brought down from 36
+  run_skip = 3
 elif data_set == "DS4":
   run_last = 12
+  run_skip = 1
+elif data_set == "DS1":
+  run_last = 11
   run_skip = 1
 else:
   print "ERROR: Can't find that data set!"

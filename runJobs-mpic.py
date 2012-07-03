@@ -382,7 +382,7 @@ elif "DS1" in data_set:
                              7.8,\
                              6.9,\
                              5.7,\
-                             4.3])*1e-8/W_offset
+                             4.3])*1e-8/W_offset*50.0
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
