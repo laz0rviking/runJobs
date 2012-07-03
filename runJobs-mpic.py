@@ -26,14 +26,14 @@ W_offset = 100
 ## THIS ISN"T CHOOSING RIGHT TIMES
 if "init" in path_phase:
   if ("jade" or "garnet") in server:
-    queue_time = "3:00:00"
+    queue_time = "5:00:00"
   elif "nyx" in server:
     queue_time = "12:00:00"
 elif "1500" in path_phase:
   if ("jade" or "garnet") in server:
     queue_time = "20:00:00"
   elif "nyx" in server:
-    queue_time = "24:00:00"
+    queue_time = "48:00:00"
 else:
   print "ERROR: phase needs to be init or 1500"
   quit()
