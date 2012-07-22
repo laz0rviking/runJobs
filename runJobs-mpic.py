@@ -33,7 +33,7 @@ elif "1500" in path_phase:
   if ("jade" or "garnet") in server:
     queue_time = "20:00:00"
   elif "nyx" in server:
-    queue_time = "48:00:00"
+    queue_time = "24:00:00"
 else:
   print "ERROR: phase needs to be init or 1500"
   quit()
@@ -41,8 +41,8 @@ else:
 ## Server-specific queueing params
 if "nyx" in server:
   queue_ppn = "4"
-  queue_name = "iainboyd"
-  #queue_name = "mjkush"
+  #queue_name = "iainboyd"
+  queue_name = "mjkush"
 elif ("jade" or "garnet") in server:
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
@@ -412,7 +412,7 @@ if "DS5" in data_set:
                          2.3E+11,\
                          2.7E+11,\
                          4.8E+11,\
-                         6.0E+11])/5.0
+                         6.0E+11])*2.0
 elif "DS4" in data_set:
   array_P = numpy.array([7.00e-2,\
                          1.33e-1,\
@@ -648,13 +648,13 @@ def write_pic():
         "$MERGE_SMALL_NEUTRAL 1.0\n",\
         "\n",\
         "$PLASMA_POT_METHOD\n",\
-        "99                    ! e-method = 0: Boltzmann, 2: detailed model\n",\
+        "0                    ! e-method = 0: Boltzmann, 2: detailed model\n",\
         "\n",\
         "$BEGIN_APPLY_E\n",\
         "60000               ! E_begin: after this step, electricity field is applied\n",\
         "\n",\
-        "BEAM_DIVERGENCE\n",\
-        "0.0 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
+        "$BEAM_DIVERGENCE\n",\
+        "0.35 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
         "\n",\
         "$END\n"]
     FILE.writelines(init_text)
