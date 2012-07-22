@@ -28,16 +28,19 @@ array_runs = range(run_first,\
 for path_run in array_runs:
   run_num = "R" + str(path_run).zfill(2)
   main_path = path_letter + "-00-layfiles/"
-  folder_path = "plasmaout-" + path_desc + "-" + run_num + "/"
+#  folder_path = "plasmaout-" + path_desc + "-" + run_num + "/"
+  folder_path = "plasmaout-" + run_num + "/"
   mypath = main_path + folder_path
            
   print "------------------------------"
   print "Running untarAll.py on \"" + mypath + "\"!"
   os.chdir(mypath)
-  subprocess.call("tar -xvf plasmaout-tar5-"+run_num+".tar", shell=True)
-  subprocess.call("tar -xvf plasmaout-tar6-"+run_num+".tar", shell=True)
-  subprocess.call("mv plasmaout-tar* ~/Desktop/000-TRASH/", shell=True)
+  nodes = range(0,16)
+  for ii in nodes:
+    subprocess.call("tar -xvf plasmaout-tar-"+str(ii)+"_5-"+run_num+".tar", shell=True)
+    subprocess.call("tar -xvf plasmaout-tar-"+str(ii)+"_6-"+run_num+".tar", shell=True)
   os.chdir(toppath)
+  subprocess.call("mv plasmaout-tar* ~/Desktop/000-TRASH/", shell=True)
 
 #  print "Pushing on \"" + mypath + "\"!"
 #  if os.path.isdir(mypath):

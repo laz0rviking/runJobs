@@ -27,9 +27,15 @@ if ("jade" or "garnet") in server:
   queue_name = "AFPRD24930028"
   queue_type = "background"
 elif "nyx" in server:
+<<<<<<< HEAD
   queue_ppn = "8"
   #queue_name = "iainboyd"
   queue_name = "mjkush"
+=======
+  queue_ppn = "4"
+  queue_name = "iainboyd"
+  #queue_name = "mjkush"
+>>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
 
 ## Initialize arrays/paths
 toppath = os.getcwd()
@@ -38,6 +44,7 @@ oldpath = path_letter + "-00-container"
 ## Make sure enough runs/skips occur
 #ii = 0
 run_first = 1
+<<<<<<< HEAD
 if "TEST" in data_set:
   run_last = 11
   run_skip = 2
@@ -45,6 +52,11 @@ elif "DS1" in data_set:
   run_last = 11
   #run_skip = 1
   run_skip = 2
+=======
+if "DS1" in data_set:
+  run_last = 11
+  run_skip = 1
+>>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
 elif "DS4" in data_set:
   run_last = 12
   run_skip = 1
@@ -124,6 +136,7 @@ if "DS5" in data_set:
                            0.451,\
                            0.027,\
                            0.005])*1e-9
+<<<<<<< HEAD
 elif "TEST" in data_set:
   array_I = numpy.array([16.73,\
                          16.73,\
@@ -147,6 +160,8 @@ elif "TEST" in data_set:
                          500,\
                          500,\
                          500])
+=======
+>>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
 elif "DS1" in data_set:
   array_I = numpy.array([16.73,\
                          16.70,\
@@ -159,6 +174,7 @@ elif "DS1" in data_set:
                          11.55,\
                          9.59,\
                          7.26])*1e-9
+<<<<<<< HEAD
   array_N = numpy.array([10,\
                          10,\
                          10,\
@@ -170,6 +186,8 @@ elif "DS1" in data_set:
                          10,\
                          10,\
                          10])
+=======
+>>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
 elif "DS4" in data_set:
   if voltage == "-10":
     array_I = numpy.array([7.329,\
@@ -256,6 +274,7 @@ elif "DS4" in data_set:
                          2.20E-01,\
                          2.50E-01,\
                          3.00E-01]) # Pascals
+<<<<<<< HEAD
 elif "TEST" in data_set:
   array_P = numpy.array([4.23E-04,\
                          1.96E-03,\
@@ -268,6 +287,8 @@ elif "TEST" in data_set:
                          2.84E-01,\
                          4.25E-01,\
                          6.38E-01]) # Pascals
+=======
+>>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
 elif "DS1" in data_set:
   array_P = numpy.array([4.23E-04,\
                          1.96E-03,\
@@ -300,7 +321,11 @@ def write_pbs():
       "#PBS -S /bin/sh\n",\
       "#PBS -A "+queue_name+"\n",\
       "#PBS -N i"+path_letter+path_desc+"R"+str(path_run).zfill(2)+"\n",\
+<<<<<<< HEAD
         "#PBS -l nodes=2:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
+=======
+        "#PBS -l nodes=1:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
+>>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
       "#PBS -M pgiulian@umich.edu\n",\
       "#PBS -m abe\n",\
       "#PBS -V\n",\
@@ -369,6 +394,11 @@ def write_test():
   ## Insert N_in
   findStr= "$N_IN"                                  
   replaceStr = str(array_N[path_run-1])
+  outputStr = outputStr.replace(findStr, replaceStr)
+
+  ## Insert voltage
+  findStr= "$VOLTAGE"                                  
+  replaceStr = voltage
   outputStr = outputStr.replace(findStr, replaceStr)
 
   outFile = open(outFileName, 'w')

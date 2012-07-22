@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=6:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"]'
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -14,8 +14,8 @@ path_letter = str(sys.argv[3])
 voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
 
-if server not in ["garnet", "nyx", "jade"]:
-  print "ERROR: Only built for garnet, jade, or nyx!"
+if server not in ["garnet", "nyx", "jade", "arrakis"]:
+  print "ERROR: Only built for garnet, jade, arrakis, or nyx!"
   quit()
 
 ## Choose your run!
@@ -26,7 +26,7 @@ W_offset = 100
 ## THIS ISN"T CHOOSING RIGHT TIMES
 if "init" in path_phase:
   if ("jade" or "garnet") in server:
-    queue_time = "5:00:00"
+    queue_time = "4:00:00"
   elif "nyx" in server:
     queue_time = "12:00:00"
 elif "1500" in path_phase:
@@ -48,7 +48,12 @@ elif ("jade" or "garnet") in server:
   ## For Garnet this is 16 cores/node
   queue_cores = "16"
   queue_name = "AFPRD24930028"
-  queue_type = "standard"
+  if "init" in path_phase:
+    queue_type = "background"
+  elif "1500" in path_phase:
+    queue_type = "standard"
+elif "arrakis" in server:
+  print "Skipping PBS shit for arrakis..."
 else:
   print "ERROR: Can't find that server!"
   quit()
@@ -577,6 +582,8 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "aprun -n "+queue_cores+" monaco\n",\
         "\n"]
+    elif "arrakis" in server:
+      print "skipped!"
     else:
       print "ERROR: Can't write pbs.sh for that server!"
       quit()
@@ -612,6 +619,8 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "aprun -n "+queue_cores+" monaco\n",\
         "\n"]
+    elif "arrakis" in server:
+      print "skipped!"
     else:
       print "ERROR: Can't write pbs.sh for that server!"
       quit()
@@ -712,12 +721,21 @@ for path_run in array_runs:
 
   write_dsmc()
   write_flow()
-  write_pbs()
+  
+  if ("jade" or "garnet" or "nyx") in server:
+    write_pbs()
+  
   write_pic()
   copy_files()
   
   os.chdir(mypath)
-  subprocess.call("qsub pbs.sh", shell=True)
+  
+  if ("jade" or "garnet" or "nyx") in server:
+    subprocess.call("qsub pbs.sh", shell=True)
+  #elif "arrakis" in server:
+  # Just wait and call it later!
+  #  subprocess.call("mpirun -n 2 monaco", shell=True)
+  
   os.chdir(toppath)
 
   ii += 1
