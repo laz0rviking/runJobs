@@ -42,6 +42,7 @@ toppath = os.getcwd()
 ## Make sure enough runs/skips occur
 ii = 0
 
+#run_first = 11
 run_first = 1
 
 if data_set == "DS5":
@@ -77,21 +78,36 @@ for path_run in array_runs:
   print "------------------------------"
   print "Pulling on \"" + mypath + "\"!"
   
+## ORIGINAL
 #  folder_name = path_letter+"-00-layfiles/plasmaout-R"+str(path_run).zfill(2)
 #  os.makedirs(folder_name)
-#  file_name = "plasmaout"
+#  scp_out = folder_name
+#  file_name = "plasmaout_5"
 #  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"*\""
-#  scp_out = folder_name
+#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#  file_name = "plasmaout_6"
+#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"*\""
 #  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 
-#  folder_name = path_letter+"-00-layfiles/plasmaout-"+path_desc+"-"+run_num
+## NEW TEMP
+#  folder_name = path_letter+"-00-layfiles/plasmaout-"+run_num
 #  os.makedirs(folder_name)
-#  file_name = "plasmaout-tar*"
-#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"\""
-#  scp_out = folder_name
-#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
-
+#  nodes = range(0,16)
+#  for ii in nodes:
+#    scp_out = folder_name
+#    file_name = "plasmaout-tar-"+str(ii)+"_5-"+run_num
+#    scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".tar\""
+#    subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#    file_name = "plasmaout-tar-"+str(ii)+"_6-"+run_num
+#    scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".tar\""
+#    subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+  
   file_name = "field"
+  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
+  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".plt"
+  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+
+  file_name = "wall"
   scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
   scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".plt"
   subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
