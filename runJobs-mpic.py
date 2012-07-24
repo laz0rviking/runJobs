@@ -25,12 +25,12 @@ W_offset = 100
 ## Choose simulation phase:
 ## THIS ISN"T CHOOSING RIGHT TIMES
 if "init" in path_phase:
-  if ("jade" or "garnet") in server:
+  if server in ["jade", "garnet"]:
     queue_time = "4:00:00"
   elif "nyx" in server:
     queue_time = "12:00:00"
 elif "1500" in path_phase:
-  if ("jade" or "garnet") in server:
+  if server in ["jade", "garnet"]:
     queue_time = "20:00:00"
   elif "nyx" in server:
     queue_time = "24:00:00"
@@ -43,7 +43,7 @@ if "nyx" in server:
   queue_ppn = "4"
   #queue_name = "iainboyd"
   queue_name = "mjkush"
-elif ("jade" or "garnet") in server:
+elif server in ["jade", "garnet"]:
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
   queue_cores = "16"
@@ -566,7 +566,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-    elif ("jade" or "garnet") in server:
+  elif server in ["jade", "garnet"]:
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -603,7 +603,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-    elif ("jade" or "garnet") in server:
+  elif server in ["jade", "garnet"]:
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -722,7 +722,7 @@ for path_run in array_runs:
   write_dsmc()
   write_flow()
   
-  if ("jade" or "garnet" or "nyx") in server:
+  if server in ["jade", "garnet, "nyx""]:
     write_pbs()
   
   write_pic()
@@ -730,7 +730,7 @@ for path_run in array_runs:
   
   os.chdir(mypath)
   
-  if ("jade" or "garnet" or "nyx") in server:
+  if server in ["jade", "garnet, "nyx""]:
     subprocess.call("qsub pbs.sh", shell=True)
   #elif "arrakis" in server:
   # Just wait and call it later!
