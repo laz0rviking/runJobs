@@ -565,7 +565,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-  elif server in ["jade", "garnet"]:
+    elif server in ["jade", "garnet"]:
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
@@ -602,7 +602,7 @@ def write_pbs():
         "cd $PBS_O_WORKDIR\n",\
         "mpirun monaco\n",\
         "\n"]
-  elif server in ["jade", "garnet"]:
+    elif server in ["jade", "garnet"]:
       init_text = ["",\
         "#!/bin/sh\n",\
         "#PBS -S /bin/sh\n",\
