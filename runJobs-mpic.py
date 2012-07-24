@@ -23,7 +23,6 @@ path_desc = "b"+voltage
 W_offset = 100
 
 ## Choose simulation phase:
-## THIS ISN"T CHOOSING RIGHT TIMES
 if "init" in path_phase:
   if server in ["jade", "garnet"]:
     queue_time = "4:00:00"
@@ -31,7 +30,7 @@ if "init" in path_phase:
     queue_time = "12:00:00"
 elif "1500" in path_phase:
   if server in ["jade", "garnet"]:
-    queue_time = "20:00:00"
+    queue_time = "04:00:00"
   elif "nyx" in server:
     queue_time = "24:00:00"
 else:
@@ -51,7 +50,7 @@ elif server in ["jade", "garnet"]:
   if "init" in path_phase:
     queue_type = "background"
   elif "1500" in path_phase:
-    queue_type = "standard"
+    queue_type = "background"
 elif "arrakis" in server:
   print "Skipping PBS shit for arrakis..."
 else:
@@ -662,7 +661,7 @@ def write_pic():
         "$BEGIN_APPLY_E\n",\
         "60000               ! E_begin: after this step, electricity field is applied\n",\
         "\n",\
-        "$BEAM_DIVERGENCE\n",\
+        "BEAM_DIVERGENCE\n",\
         "0.35 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
         "\n",\
         "$END\n"]
