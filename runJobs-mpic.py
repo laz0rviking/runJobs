@@ -721,7 +721,7 @@ for path_run in array_runs:
   write_dsmc()
   write_flow()
   
-  if server in ["jade", "garnet, "nyx""]:
+  if server in ["jade", "garnet", "nyx"]:
     write_pbs()
   
   write_pic()
@@ -729,7 +729,7 @@ for path_run in array_runs:
   
   os.chdir(mypath)
   
-  if server in ["jade", "garnet, "nyx""]:
+  if server in ["jade", "garnet", "nyx"]:
     subprocess.call("qsub pbs.sh", shell=True)
   #elif "arrakis" in server:
   # Just wait and call it later!
