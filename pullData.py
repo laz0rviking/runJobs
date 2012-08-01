@@ -14,19 +14,19 @@ path_letter = str(sys.argv[3])
 path_desc = sys.argv[4]
 path_phase = str(sys.argv[5])
 
-if server == "garnet":
+if "garnet" in server:
   command_name = "/usr/local/ossh/bin/scp"
   user_name = "pgiulian"
   server_name = "garnet01.erdc.hpc.mil"
   #path_name = "~/mpic-project/work/"
   path_name = "~/work/mpic-work/"
-if server == "jade":
+elif "jade" in server:
   command_name = "/usr/local/ossh/bin/scp"
   user_name = "pgiulian"
   server_name = "jade01.erdc.hpc.mil"
   #path_name = "~/mpic-project/work/"
   path_name = "~/work/mpic-work/"
-elif server == "nyx":
+elif "nyx" in server:
   command_name = "scp"
   user_name = "pgiulian"
   server_name = "nyx-login.engin.umich.edu"
@@ -102,25 +102,32 @@ for path_run in array_runs:
 #    scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".tar\""
 #    subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
   
-  file_name = "field"
-  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
-  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".plt"
+  folder_name = path_letter+"-00-layfiles/IEDF-"+run_num
+  os.makedirs(folder_name)
+  scp_out = folder_name
+  file_name = "IEDF"
+  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"_*\""
   subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 
-  file_name = "wall"
-  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
-  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".plt"
-  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
-
-  file_name = "countNumDiag"
-  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".dat\""
-  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".dat"
-  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
-
-  file_name = "countMultiColl"
-  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".dat\""
-  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".dat"
-  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#  file_name = "field"
+#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
+#  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".plt"
+#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#
+#  file_name = "wall"
+#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
+#  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".plt"
+#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#
+#  file_name = "countNumDiag"
+#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".dat\""
+#  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".dat"
+#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#
+#  file_name = "countMultiColl"
+#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".dat\""
+#  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".dat"
+#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 
   ii += 1
   print ""
