@@ -40,8 +40,8 @@ else:
 ## Server-specific queueing params
 if "nyx" in server:
   queue_ppn = "4"
-  #queue_name = "iainboyd"
-  queue_name = "mjkush"
+  queue_name = "iainboyd"
+  #queue_name = "mjkush"
 elif server in ["jade", "garnet"]:
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
