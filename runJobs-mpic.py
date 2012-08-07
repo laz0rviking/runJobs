@@ -3,8 +3,8 @@
 import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
-if len(sys.argv)!=8:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3]'
+if len(sys.argv)!=9:
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -15,6 +15,7 @@ voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
 pot_solver = str(sys.argv[6])
 beam_div = str(sys.argv[7])
+queue_name = str(sys.argv[8])
 
 if server not in ["garnet", "nyx", "jade", "arrakis"]:
   print "ERROR: Only built for garnet, jade, arrakis, or nyx!"
@@ -42,8 +43,6 @@ else:
 ## Server-specific queueing params
 if "nyx" in server:
   queue_ppn = "4"
-  queue_name = "iainboyd"
-  #queue_name = "mjkush"
 elif server in ["jade", "garnet"]:
   ## Make sure you use the ENTIRE node!
   ## For Garnet this is 16 cores/node
