@@ -3,8 +3,8 @@
 import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
-if len(sys.argv)!=6:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"]'
+if len(sys.argv)!=8:
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3]'
   sys.exit(0)
 
 ## Gather server variable
@@ -13,6 +13,8 @@ data_set = str(sys.argv[2])
 path_letter = str(sys.argv[3])
 voltage = str(sys.argv[4])
 path_phase = str(sys.argv[5])
+pot_solver = str(sys.argv[6])
+beam_div = str(sys.argv[7])
 
 if server not in ["garnet", "nyx", "jade", "arrakis"]:
   print "ERROR: Only built for garnet, jade, arrakis, or nyx!"
@@ -656,13 +658,13 @@ def write_pic():
         "$MERGE_SMALL_NEUTRAL 1.0\n",\
         "\n",\
         "$PLASMA_POT_METHOD\n",\
-        "0                    ! e-method = 0: Boltzmann, 2: detailed model\n",\
+        ""+pot_solver+"                 ! e-method = 0: Boltzmann, 2: detailed model\n",\
         "\n",\
         "$BEGIN_APPLY_E\n",\
         "60000               ! E_begin: after this step, electricity field is applied\n",\
         "\n",\
-        "BEAM_DIVERGENCE\n",\
-        "0.35 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
+        "$BEAM_DIVERGENCE\n",\
+        ""+beam_div+" 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
         "\n",\
         "$END\n"]
     FILE.writelines(init_text)
