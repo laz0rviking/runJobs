@@ -71,6 +71,9 @@ if not os.path.isdir(collect_folder):
 else:
   print "ERROR: Directory \"" + collect_folder + "\" already exists!"
   quit()
+
+## First, call batchOXFORD.py
+subprocess.call("batchOXFORD.py "+data_set+" "+path_letter+" "+path_desc+" "+path_phase, shell=True)
            
 ############################
 ## Main Loop
