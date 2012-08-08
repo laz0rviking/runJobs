@@ -443,7 +443,7 @@ elif "DS4" in data_set:
                          1.3e+9,\
                          1.6e+9,\
                          1.8e+9,\
-                         2.1e+9])*10*3
+                         2.1e+9])*10*3*3
 elif "DS1" in data_set:
   array_P = numpy.array([2.07E-03,\
                          9.61E-03,\
