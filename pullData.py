@@ -68,15 +68,16 @@ array_runs = range(run_first,\
 ############################
 ## Main Loop
 ############################
-for path_run in array_runs:
-  run_num = "R" + str(path_run).zfill(2)
-  mypath = path_letter + "-" + \
-           path_desc + "-" + \
-           path_phase + "-" + \
-           run_num
-           
-  print "------------------------------"
-  print "Pulling on \"" + mypath + "\"!"
+#for path_run in array_runs:
+#  run_num = "R" + str(path_run).zfill(2)
+#  mypath = path_letter + "-" + \
+#           path_desc + "-" + \
+#           path_phase + "-" + \
+#           run_num
+#           
+
+print "------------------------------"
+print "Pulling on \"" + path_letter + "\"!"
   
 ## ORIGINAL
 #  folder_name = path_letter+"-00-layfiles/plasmaout-R"+str(path_run).zfill(2)
@@ -102,12 +103,12 @@ for path_run in array_runs:
 #    scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".tar\""
 #    subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
   
-  folder_name = path_letter+"-00-layfiles/IEDF-"+run_num
-  os.makedirs(folder_name)
-  scp_out = folder_name
-  file_name = "IEDF"
-  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"_*\""
-  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+#  folder_name = path_letter+"-00-layfiles/IEDF-"+run_num
+#  os.makedirs(folder_name)
+#  scp_out = folder_name
+#  file_name = "IEDF"
+#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"_*\""
+#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 
 #  file_name = "field"
 #  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".plt\""
@@ -129,7 +130,18 @@ for path_run in array_runs:
 #  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".dat"
 #  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 
-  ii += 1
-  print ""
+file_name = path_letter+"-transfer.tar"
+scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+file_name+"\""
+scp_out = path_letter+"-00-layfiles/"+file_name
+subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
+os.chdir(path_letter+"-00-layfiles/")
+subprocess.call("tar xvf "+path_letter+"-transfer.tar", shell=True)
+subprocess.call("mv "+path_letter+"-00-transfer/* .", shell=True)
+subprocess.call("rm -r "+path_letter+"-00-transfer/", shell=True)
+subprocess.call("rm "+path_letter+"-transfer.tar", shell=True)
+os.chdir(toppath)
+
+ii += 1
+print ""
 
 
