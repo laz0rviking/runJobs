@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=9:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DSB/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -82,7 +82,7 @@ if "DS5" in data_set:
 elif "DS4" in data_set:
   run_last = 12
   run_skip = 1
-elif "DS1" in data_set:
+elif "DSB" in data_set:
   run_last = 11
   run_skip = 1
 else:
@@ -106,7 +106,7 @@ Ai = numpy.pi*ri*ri
 ## variations (e.g., the y/z variation)
 ## DS5 (aa,bb
 ## DS4 (x,y,z)
-## DS1 (t-v)
+## DSB (t-v)
 if "DS5" in data_set:
   if voltage == "-10":
     array_I = numpy.array([12.440,\
@@ -365,7 +365,7 @@ elif "DS4" in  data_set:
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
-elif "DS1" in data_set:
+elif "DSB" in data_set:
   array_I = numpy.array([16.73,\
                          16.70,\
                          16.63,\
@@ -444,7 +444,7 @@ elif "DS4" in data_set:
                          1.6e+9,\
                          1.8e+9,\
                          2.1e+9])*10*3*3
-elif "DS1" in data_set:
+elif "DSB" in data_set:
   array_P = numpy.array([2.07E-03,\
                          9.61E-03,\
                          2.45E-02,\

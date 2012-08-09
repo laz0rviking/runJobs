@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess,string
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=5:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DS1", "DS5"] [path-letter, e.g. "a-01", "b-01"] [IC bias-voltage, e.g. "-10", "00", "20"]'
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DSB", "DS5"] [path-letter, e.g. "a-01", "b-01"] [IC bias-voltage, e.g. "-10", "00", "20"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -48,12 +48,12 @@ run_first = 1
 if "TEST" in data_set:
   run_last = 11
   run_skip = 2
-elif "DS1" in data_set:
+elif "DSB" in data_set:
   run_last = 11
   #run_skip = 1
   run_skip = 2
 =======
-if "DS1" in data_set:
+if "DSB" in data_set:
   run_last = 11
   run_skip = 1
 >>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
@@ -82,7 +82,7 @@ k = 1.38e-23
 ## variations (e.g., the y/z variation)
 ## DS5 (aa,bb
 ## DS4 (x,y,z)
-## DS1 (t-v)
+## DSB (t-v)
 if "DS5" in data_set:
   if voltage == "-10":
     array_I = numpy.array([12.440,\
@@ -162,7 +162,7 @@ elif "TEST" in data_set:
                          500])
 =======
 >>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
-elif "DS1" in data_set:
+elif "DSB" in data_set:
   array_I = numpy.array([16.73,\
                          16.70,\
                          16.63,\
@@ -289,7 +289,7 @@ elif "TEST" in data_set:
                          6.38E-01]) # Pascals
 =======
 >>>>>>> 2737013a8ba7753a40376909f7bde075e7f87a85
-elif "DS1" in data_set:
+elif "DSB" in data_set:
   array_P = numpy.array([4.23E-04,\
                          1.96E-03,\
                          5.00E-03,\
