@@ -29,8 +29,10 @@ elif "jade" in server:
 elif "nyx" in server:
   command_name = "scp"
   user_name = "pgiulian"
-  server_name = "nyx-login.engin.umich.edu"
-  path_name = "~/work/mpic-work/"
+  server_name = "nyx-xfer.engin.umich.edu"
+  path_name = "/home/pgiulian/work/mpic-work/"
+  #server_name = "nyx-login.engin.umich.edu"
+  #path_name = "~/work/mpic-work/"
   #path_name = "/home/pgiulian/mpic-project/work/wirz-chamber"
 else:
   print "ERROR: Can't find that server!"
