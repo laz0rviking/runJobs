@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=5:
-  print 'Usage: pullData.py [server, e.g. "garnet", "nyx"] [data-set, e.g. "DSB", "DS5"] [letter, e.g "x"] [description, e.g "bias00"]'
+  print 'Usage: pullData.py [server, e.g. "garnet", "nyx"] [data-set, e.g. "DSB", "DSD"] [letter, e.g "x"] [description, e.g "bias00"]'
   sys.exit(0)
 
 ## Gather variables
@@ -35,10 +35,10 @@ toppath = os.getcwd()
 ## Make sure enough runs/skips occur
 ii = 0
 run_first = 1
-if data_set == "DS5":
+if data_set == "DSD":
   run_last = 34
   run_skip = 3
-elif data_set == "DS4":
+elif data_set == "DSC":
   run_last = 12
   run_skip = 1
 elif data_set == "DSB":

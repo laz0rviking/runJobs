@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=9:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DSB/DS4/DS5"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DSB/DSC/DSD"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -76,10 +76,10 @@ ii = 0
 
 run_first = 1
 
-if "DS5" in data_set:
+if "DSD" in data_set:
   run_last = 34 # brought down from 36
   run_skip = 3
-elif "DS4" in data_set:
+elif "DSC" in data_set:
   run_last = 12
   run_skip = 1
 elif "DSB" in data_set:
@@ -104,10 +104,10 @@ Ai = numpy.pi*ri*ri
 ## Data set input parameters
 ## Make sure to check for specific weighting
 ## variations (e.g., the y/z variation)
-## DS5 (aa,bb
-## DS4 (x,y,z)
+## DSD (aa,bb
+## DSC (x,y,z)
 ## DSB (t-v)
-if "DS5" in data_set:
+if "DSD" in data_set:
   if voltage == "-10":
     array_I = numpy.array([12.440,\
                            12.289,\
@@ -211,7 +211,7 @@ if "DS5" in data_set:
   else:
     print "ERROR: can't find input conditions for that voltage"
     quit()
-elif "DS4" in  data_set:
+elif "DSC" in  data_set:
   if voltage == "20":
     array_I = numpy.array([5.292,\
                            4.314,\
@@ -392,7 +392,7 @@ else:
   print "ERROR: Can't find that Data Set!"
   quit()
 
-if "DS5" in data_set:
+if "DSD" in data_set:
   array_P = numpy.array([1.53E-02,\
                          4.93E-02,\
                          9.53E-02,\
@@ -418,7 +418,7 @@ if "DS5" in data_set:
                          2.7E+11,\
                          4.8E+11,\
                          6.0E+11])*2.0
-elif "DS4" in data_set:
+elif "DSC" in data_set:
   array_P = numpy.array([7.00e-2,\
                          1.33e-1,\
                          1.99e-1,\
