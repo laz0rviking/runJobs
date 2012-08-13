@@ -28,6 +28,9 @@ elif data_set == "DSC":
 elif data_set == "DSB":
   run_last = 11
   run_skip = 1
+elif data_set == "DSA":
+  run_last = 9
+  run_skip = 1
 else:
   print "ERROR: Can't find that data set!"
   quit()

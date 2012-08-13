@@ -85,6 +85,9 @@ elif "DSC" in data_set:
 elif "DSB" in data_set:
   run_last = 11
   run_skip = 1
+elif "DSA" in data_set:
+  run_last = 9
+  run_skip = 1
 else:
   print "ERROR: Can't find that data set!"
   quit()
@@ -388,6 +391,25 @@ elif "DSB" in data_set:
                              6.9,\
                              5.7,\
                              4.3])*1e-8/W_offset*50.0
+elif "DSA" in data_set:
+  array_I = numpy.array([17.727,\
+                         17.357,\
+                         17.053,\
+                         16.216,\
+                         15.329,\
+                         14.522,\
+                         13.418,\
+                         12.689,\
+                         8.108])*1e-9
+  array_Wspec = numpy.array([10.,\
+                             9.8,\
+                             9.6,\
+                             9.1,\
+                             8.6,\
+                             8.2,\
+                             7.6,\
+                             7.2,\
+                             4.6])*1e-8/W_offset*50.0
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -467,6 +489,26 @@ elif "DSB" in data_set:
                          4.5E+10,\
                          6.7E+10,\
                          1.0E+11,\
+                         1.5E+11])
+elif "DSA" in data_set:
+  array_P = numpy.array([2.00E-03,\
+                         8.06E-02,\
+                         1.47E-01,\
+                         3.35E-01,\
+                         5.45E-01,\
+                         7.46E-01,\
+                         1.04E+00,\
+                         1.25E+00,\
+                         2.92E+00])/133.32
+
+  array_W = numpy.array([1.0E+08,\
+                         4.0E+09,\
+                         7.3E+09,\
+                         1.7E+10,\
+                         2.7E+10,\
+                         3.7E+10,\
+                         5.2E+10,\
+                         6.3E+10,\
                          1.5E+11])
 else:
   print "ERROR: Can't find that Data Set!"
