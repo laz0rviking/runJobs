@@ -65,12 +65,12 @@ array_runs = range(run_first,\
 #array_runs = [1, 4, 8]
 #array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
 
-collect_folder = path_letter + "-00-transfer/"
+collect_folder = path_letter + "-transfer/"
 if not os.path.isdir(collect_folder):
   subprocess.call("mkdir " + collect_folder, shell=True)
-else:
-  print "ERROR: Directory \"" + collect_folder + "\" already exists!"
-  quit()
+#else:
+#  print "ERROR: Directory \"" + collect_folder + "\" already exists!"
+#  quit()
 
 ## First, call batchOXFORD.py
 subprocess.call("batchOXFORD.py "+data_set+" "+path_letter+" "+path_desc+" "+path_phase, shell=True)
