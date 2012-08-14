@@ -115,13 +115,6 @@ for path_run in array_runs:
 #    scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+".tar\""
 #    subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
   
-#  folder_name = path_letter+"-00-layfiles/IEDF-"+run_num
-#  os.makedirs(folder_name)
-#  scp_out = folder_name
-#  file_name = "IEDF"
-#  scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+mypath+"/"+file_name+"_*\""
-#  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
-
   file_name = "field"
   copy_in = mypath+"/"+file_name+".plt"
   copy_out = collect_folder+file_name+"-"+mypath+".plt"
@@ -140,6 +133,13 @@ for path_run in array_runs:
   file_name = "countMultiColl"
   copy_in = mypath+"/"+file_name+".dat"
   copy_out = collect_folder+file_name+"-"+mypath+".dat"
+  subprocess.call("cp "+copy_in+" "+copy_out, shell=True)
+
+  file_name = "IEDF"
+  subfolder_name = collect_folder+file_name"-"+run_num+"/"
+  os.makedirs(folder_name)
+  copy_in = mypath+"/"+file_name+"*"
+  copy_out = collect_folder+sub_folder_name
   subprocess.call("cp "+copy_in+" "+copy_out, shell=True)
 
   ii += 1
