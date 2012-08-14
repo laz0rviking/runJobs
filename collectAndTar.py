@@ -136,11 +136,11 @@ for path_run in array_runs:
   subprocess.call("cp "+copy_in+" "+copy_out, shell=True)
 
   file_name = "IEDF"
-  subfolder_name = collect_folder+file_name+"-"+run_num+"/"
+  subfolder_name = collect_folder+file_name+"-"+mypath+"/"
   os.makedirs(subfolder_name)
   copy_in = mypath+"/"+file_name+"*"
-  copy_out = collect_folder+sub_folder_name
-  subprocess.call("cp "+copy_in+" "+copy_out, shell=True)
+  copy_out = subfolder_name
+  subprocess.call("cp -r "+copy_in+" "+copy_out, shell=True)
 
   ii += 1
   print ""
