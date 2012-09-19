@@ -509,7 +509,7 @@ elif "DSA" in data_set:
                          3.7E+10,\
                          5.2E+10,\
                          6.3E+10,\
-                         1.5E+11])
+                         1.5E+11])*10
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
