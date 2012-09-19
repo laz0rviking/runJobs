@@ -539,7 +539,7 @@ def write_dsmc():
         "1000       ! Interval: Evaluate macroscopic data\n",\
         "1000       ! Interval: Print output\n",\
         "100000000  ! Interval: Particle domain decompositon\n",\
-        "1E-14      ! Roundoff accuracy for the grid\n",\
+        "1E-20      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
   elif "1500" in path_phase:
     init_text = ["",\
@@ -552,7 +552,7 @@ def write_dsmc():
         "1000       ! Interval: Evaluate macroscopic data\n",\
         "1000       ! Interval: Print output\n",\
         "100000000  ! Interval: Particle domain decompositon\n",\
-        "1E-14      ! Roundoff accuracy for the grid\n",\
+        "1E-20      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
   
   FILE.writelines(init_text)
@@ -572,11 +572,13 @@ def write_flow():
   if "init" in path_phase:
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
-      "46900. 0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
+      "46900. 0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
+      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 1e-13 ! e-\n"]
   elif "1500" in path_phase:
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
-      "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n"]
+      "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
+      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 1e-13 ! e-\n"]
 
   FILE.writelines(init_text)
   FILE.close()
@@ -606,7 +608,7 @@ def write_pbs():
         "#PBS -joe\n",\
         "\n",\
         "cd $PBS_O_WORKDIR\n",\
-        "mpirun monaco\n",\
+        "mpirun monaco_test_double\n",\
         "\n"]
     elif server in ["jade", "garnet"]:
       init_text = ["",\
@@ -643,7 +645,7 @@ def write_pbs():
         "#PBS -joe\n",\
         "\n",\
         "cd $PBS_O_WORKDIR\n",\
-        "mpirun monaco\n",\
+        "mpirun monaco_test_double\n",\
         "\n"]
     elif server in ["jade", "garnet"]:
       init_text = ["",\
@@ -682,11 +684,12 @@ def write_pic():
     PATH = mypath + "/" + filename
     FILE = open(PATH,"w")
     init_text = ["",\
-        "$PLASMABCS 6\n",\
+        "$PLASMABCS 7\n",\
         "-4 2 0.0 0	0.0	0	0.0	! outflow\n",\
-        "-1 1 0.0 0	0.0	0	0.0	! EP top+bottom\n",\
+        "-1 1 0.0 0	0.0	0	0.0	! EP emitter\n",\
+        "-1 1 0.0 0	0.0	0	0.0	! EP \n",\
         "-1 1 "+voltage+".0 0	0.0	0	0.0	! IC\n",\
-        "-1 1 0.0 0	0.0	0	0.0	! AF\n",\
+        "-1 1 0.0 0	0.0	0	0.0	! UP\n",\
         "-2 2 0.0 0	0.0	0	0.0	! inlet\n",\
         "-8 2 0.0 0	0.0	0	0.0	! symmetry line\n",\
         "\n",\
