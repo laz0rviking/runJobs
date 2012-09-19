@@ -402,14 +402,14 @@ elif "DSA" in data_set:
                          12.689,\
                          8.108])*1e-9
   array_Wspec = numpy.array([10.,\
-                             9.8,\
-                             9.6,\
-                             9.1,\
-                             8.6,\
-                             8.2,\
-                             7.6,\
-                             7.2,\
-                             4.6])*1e-8/W_offset*50.0
+                             9.8/10,\
+                             9.6/20,\
+                             9.1/40,\
+                             8.6/80,\
+                             8.2/160,\
+                             7.6/320,\
+                             7.2/640,\
+                             4.6/1280])*1e-8/W_offset*50.0
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
