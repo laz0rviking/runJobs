@@ -625,7 +625,7 @@ def write_pbs():
         "#PBS -V\n",\
         "\n",\
         "cd $PBS_O_WORKDIR\n",\
-        "aprun -n "+queue_cores+" monaco\n",\
+        "aprun -n "+queue_cores+" monaco_test_double\n",\
         "\n"]
     elif "arrakis" in server:
       print "skipped!"
@@ -662,7 +662,7 @@ def write_pbs():
         "#PBS -V\n",\
         "\n",\
         "cd $PBS_O_WORKDIR\n",\
-        "aprun -n "+queue_cores+" monaco\n",\
+        "aprun -n "+queue_cores+" monaco_test_double\n",\
         "\n"]
     elif "arrakis" in server:
       print "skipped!"
