@@ -22,11 +22,12 @@ queue_time = "20:00:00"
 ## Server-specific queueing params
 ## Make sure you use the ENTIRE node!
 ## For Garnet this is 16 cores/node
-if ("jade" or "garnet") in server:
+if server in ["jade", "garnet"]:
   queue_cores = "16"
   queue_name = "AFPRD24930028"
   queue_type = "background"
-elif "nyx" in server:
+  queue_time = "4:00:00"
+elif server in "nyx":
   queue_ppn = "4"
   queue_name = "iainboyd"
   #queue_name = "mjkush"
@@ -71,6 +72,7 @@ k = 1.38e-23
 ## DSC (x,y,z)
 ## DSB (t-v)
 if "DSD" in data_set:
+
   if voltage == "-10":
     array_I = numpy.array([12.440,\
                            12.289,\
@@ -84,6 +86,7 @@ if "DSD" in data_set:
                            7.615,\
                            5.205,\
                            4.160])*1e-9
+
   elif voltage == "00":
     array_I = numpy.array([12.194,\
                            11.974,\
@@ -97,6 +100,7 @@ if "DSD" in data_set:
                            5.851,\
                            3.311,\
                            2.368])*1e-9
+
   elif voltage == "10":
     array_I = numpy.array([14.130,\
                            13.250,\
@@ -110,6 +114,7 @@ if "DSD" in data_set:
                            1.065,\
                            0.143,\
                            0.044])*1e-9
+
   elif voltage == "20":
     array_I = numpy.array([17.388,\
                            15.878,\
@@ -123,6 +128,7 @@ if "DSD" in data_set:
                            0.451,\
                            0.027,\
                            0.005])*1e-9
+
 elif "TEST" in data_set:
   array_I = numpy.array([16.73,\
                          16.73,\
@@ -135,17 +141,19 @@ elif "TEST" in data_set:
                          16.73,\
                          16.73,\
                          16.73])/4.0*1e-9
-  array_N = numpy.array([500,\
-                         500,\
-                         500,\
-                         500,\
-                         500,\
-                         500,\
-                         500,\
-                         500,\
-                         500,\
-                         500,\
-                         500])
+
+  array_N = numpy.array([50,\
+                         50,\
+                         50,\
+                         50,\
+                         50,\
+                         50,\
+                         50,\
+                         50,\
+                         50,\
+                         50,\
+                         50])
+
 elif "DSB" in data_set:
   array_I = numpy.array([16.73,\
                          16.70,\
@@ -158,6 +166,7 @@ elif "DSB" in data_set:
                          11.55,\
                          9.59,\
                          7.26])*1e-9
+
   array_N = numpy.array([10,\
                          10,\
                          10,\
@@ -169,6 +178,7 @@ elif "DSB" in data_set:
                          10,\
                          10,\
                          10])
+
 elif "DSC" in data_set:
   if voltage == "-10":
     array_I = numpy.array([7.329,\
@@ -183,6 +193,7 @@ elif "DSC" in data_set:
                            4.187,\
                            3.854,\
                            3.370])*1e-9
+
   elif voltage == "00":
     array_I = numpy.array([6.922,\
                            6.610,\
@@ -196,6 +207,7 @@ elif "DSC" in data_set:
                            3.268,\
                            2.925,\
                            2.443])*1e-9
+
   elif voltage == "10":
     array_I = numpy.array([5.121,\
                            4.225,\
@@ -209,6 +221,7 @@ elif "DSC" in data_set:
                            1.292,\
                            1.112,\
                            0.861])*1e-9
+
   elif voltage == "20":
     array_I = numpy.array([5.292,\
                            4.314,\
@@ -222,9 +235,11 @@ elif "DSC" in data_set:
                            1.108,\
                            0.912,\
                            0.638])*1e-9
+
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
+
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -242,6 +257,7 @@ if "DSD" in data_set:
                          1.38E+00,\
                          2.44E+00,\
                          3.07E+00])
+
 elif "DSC" in data_set:
   array_P = numpy.array([1.40E-02,\
                          2.67E-02,\
@@ -255,7 +271,10 @@ elif "DSC" in data_set:
                          2.20E-01,\
                          2.50E-01,\
                          3.00E-01]) # Pascals
+
 elif "TEST" in data_set:
+  Nparts = 1e6
+
   array_P = numpy.array([4.23E-04,\
                          1.96E-03,\
                          5.00E-03,\
@@ -267,6 +286,9 @@ elif "TEST" in data_set:
                          2.84E-01,\
                          4.25E-01,\
                          6.38E-01]) # Pascals
+
+  array_n = array_P/k/T
+
 elif "DSB" in data_set:
   array_P = numpy.array([4.23E-04,\
                          1.96E-03,\
@@ -279,6 +301,7 @@ elif "DSB" in data_set:
                          2.84E-01,\
                          4.25E-01,\
                          6.38E-01]) # Pascals
+
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -293,13 +316,13 @@ def write_pbs():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
 
-  if "nyx" in server:
+  if server in "nyx":
     init_text = ["",\
       "#!/bin/sh\n",\
       "#PBS -S /bin/sh\n",\
       "#PBS -A "+queue_name+"\n",\
       "#PBS -N i"+path_letter+path_desc+"R"+str(path_run).zfill(2)+"\n",\
-        "#PBS -l nodes=2:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
+      "#PBS -l nodes=2:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
       "#PBS -M pgiulian@umich.edu\n",\
       "#PBS -m abe\n",\
       "#PBS -V\n",\
@@ -308,7 +331,7 @@ def write_pbs():
       "cd $PBS_O_WORKDIR\n",\
       "mpirun icepic\n",\
       "\n"]
-  elif ("jade" or "garnet") in server:
+  elif server in ["jade", "garnet"]:
     init_text = ["",\
       "#!/bin/sh\n",\
       "#PBS -S /bin/sh\n",\
@@ -353,6 +376,16 @@ def write_test():
   ## Insert current
   findStr= "$CURRENT"                                  
   replaceStr = str(array_I[path_run-1])
+  outputStr = outputStr.replace(findStr, replaceStr)
+
+  ## Insert density
+  findStr= "$DENSITY"                                  
+  replaceStr = str(array_n[path_run-1])
+  outputStr = outputStr.replace(findStr, replaceStr)
+
+  ## Insert Nparts
+  findStr= "$NPARTS"                                  
+  replaceStr = str(Nparts)
   outputStr = outputStr.replace(findStr, replaceStr)
 
   ## Insert pressure
