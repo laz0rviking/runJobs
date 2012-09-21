@@ -49,7 +49,7 @@ for path_run in array_runs:
   print "------------------------------"
   print "Running OXFORD on \"" + mypath + "\"!"
   os.chdir(mypath)
-  subprocess.call("oxford", shell=True)
+  subprocess.call("oxford_double", shell=True)
   os.chdir(toppath)
 
   ii += 1

@@ -69,7 +69,8 @@ array_files = ["oxford.dat",\
                "grid.ngp",\
                "scatter.xexe",\
                "Qen.dat",\
-               "link.dat"]
+               "link.dat",\
+               "waitSEE.dat"]
 
 ## Make sure enough runs/skips occur
 ii = 0
@@ -409,7 +410,7 @@ elif "DSA" in data_set:
                              8.2/160,\
                              7.6/320,\
                              7.2/640,\
-                             4.6/1280])*1e-8/W_offset*50.0
+                             4.6/1280])*1e-8/W_offset*50.0*10.0
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -509,7 +510,7 @@ elif "DSA" in data_set:
                          3.7E+10,\
                          5.2E+10,\
                          6.3E+10,\
-                         1.5E+11])*10
+                         1.5E+11])
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
