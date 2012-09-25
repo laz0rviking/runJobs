@@ -4,7 +4,7 @@ import sys,os,numpy,shutil,subprocess
 
 ## If arguments aren't given correctly, print a help message
 if len(sys.argv)!=9:
-  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DSB/DSC/DSD"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
+  print 'Usage: runJobs [server name, e.g. "nyx/jade/garnet/arrakis"] [data-set, e.g. "DSB/DSC/DSD"] [path-letter, e.g. "a-01/bb"] [IC bias-voltage, e.g. "-10/00/20"] [phase, e.g. "init/1500/e"] [potential solve, e.g. "0/99"] [beam div., e.g. "0.0/0.2/0.3] [nyx queue, e.g. "iainboyd/mjkush"]'
   sys.exit(0)
 
 ## Gather server variable
@@ -36,8 +36,13 @@ elif "1500" in path_phase:
     queue_time = "04:00:00"
   elif "nyx" in server:
     queue_time = "24:00:00"
+elif "e" in path_phase:
+  if server in ["jade", "garnet"]:
+    queue_time = "04:00:00"
+  elif "nyx" in server:
+    queue_time = "24:00:00"
 else:
-  print "ERROR: phase needs to be init or 1500"
+  print "ERROR: phase needs to be init or 1500 or e"
   quit()
 
 ## Server-specific queueing params
@@ -411,6 +416,25 @@ elif "DSA" in data_set:
                              7.6/320,\
                              7.2/640,\
                              4.6/1280])*1e-8/W_offset*50.0*10.0
+  # PNG
+  array_G_SEE_EP = numpy.array([1.22E+013,\
+                                3.29E+013,\
+                                3.19E+013,\
+                                4.92E+013,\
+                                6.85E+013,\
+                                1.11E+014,\
+                                1.07E+014,\
+                                1.02E+014,\
+                                1.07E+014])
+  array_W_SEE_EP = numpy.array([1.00,\
+                                2.69,\
+                                2.61,\
+                                4.03,\
+                                5.60,\
+                                9.08,\
+                                8.78,\
+                                8.30,\
+                                8.78])*1e-13
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
@@ -555,6 +579,19 @@ def write_dsmc():
         "100000000  ! Interval: Particle domain decompositon\n",\
         "1E-20      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
+  elif "e" in path_phase:
+    init_text = ["",\
+        "3.0e-12    ! Reference time step\n",\
+        "%.1e" % array_W[ii] + "    ! 1.5e9 Reference particle weight (Nreal/Nmodel)\n",\
+        "1000000     ! Number of simulation steps before sampling\n",\
+        "1100000     ! Total number of simulation steps\n",\
+        "5000       ! Interval: Write restart file\n",\
+        "1          ! Interval: Sample particle data\n",\
+        "1000       ! Interval: Evaluate macroscopic data\n",\
+        "1000       ! Interval: Print output\n",\
+        "100000000  ! Interval: Particle domain decompositon\n",\
+        "1E-20      ! Roundoff accuracy for the grid\n",\
+        "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
   
   FILE.writelines(init_text)
   FILE.close()
@@ -574,12 +611,40 @@ def write_flow():
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
-      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 1e-13 ! e-\n"]
+      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_W_SEE_EP[ii] + "  ! e-\n"]
   elif "1500" in path_phase:
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
-      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 1e-13 ! e-\n"]
+      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_W_SEE_EP[ii] + "  ! e-\n"]
+  elif "e" in path_phase:
+    init_text = ["",\
+      "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
+      "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
+      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_W_SEE_EP[ii] + "  ! e-\n"]
+
+  FILE.writelines(init_text)
+  FILE.close()
+  print filename + " created!"
+  return
+
+###########################
+## Write SEE.dat
+##########################
+def write_SEE():
+  filename = "SEE.dat"
+
+  PATH = mypath + "/" + filename
+  FILE = open(PATH,"w")
+ 
+  if "e" in path_phase:
+    init_text = ["",\
+      "1 0.0\n",\
+      "2 0.0\n",\
+      "3 " + "%.2e" % array_G_SEE_EP[ii] + "\n"]
+  else:
+    print "ERROR: SEE.dat should only be called for e run!"
+    quit()
 
   FILE.writelines(init_text)
   FILE.close()
@@ -669,6 +734,43 @@ def write_pbs():
     else:
       print "ERROR: Can't write pbs.sh for that server!"
       quit()
+  elif "e" in path_phase:
+    if "nyx" in server:
+      init_text = ["",\
+        "#!/bin/sh\n",\
+        "#PBS -S /bin/sh\n",\
+        "#PBS -A "+queue_name+"\n",\
+        "#PBS -N "+path_letter+path_desc+"R"+str(path_run).zfill(2)+"\n",\
+        "#PBS -l nodes=1:ppn="+queue_ppn+",pmem=900mb,walltime="+queue_time+",qos="+queue_name+"\n",\
+        "#PBS -M pgiulian@umich.edu\n",\
+        "#PBS -m abe\n",\
+        "#PBS -V\n",\
+        "#PBS -joe\n",\
+        "\n",\
+        "cd $PBS_O_WORKDIR\n",\
+        "mpirun monaco_test_double\n",\
+        "\n"]
+    elif server in ["jade", "garnet"]:
+      init_text = ["",\
+        "#!/bin/sh\n",\
+        "#PBS -S /bin/sh\n",\
+        "#PBS -A "+queue_name+"\n",\
+        "#PBS -q "+queue_type+"\n",\
+        "#PBS -N "+path_letter+path_desc+"R"+str(path_run).zfill(2)+"\n",\
+        "#PBS -l ncpus="+queue_cores+",walltime="+queue_time+"\n",\
+        "#PBS -M pgiulian@umich.edu\n",\
+        "#PBS -m be\n",\
+        "#PBS -j oe\n",\
+        "#PBS -V\n",\
+        "\n",\
+        "cd $PBS_O_WORKDIR\n",\
+        "aprun -n "+queue_cores+" monaco_test_double\n",\
+        "\n"]
+    elif "arrakis" in server:
+      print "skipped!"
+    else:
+      print "ERROR: Can't write pbs.sh for that server!"
+      quit()
 
   FILE.writelines(init_text)
   FILE.close()
@@ -717,6 +819,8 @@ def write_pic():
     print filename + " created!"
   elif "1500" in path_phase:
     print "Skipping " + filename + "..."
+  elif "e" in path_phase:
+    print "Skipping " + filename + "..."
 
   return
 
@@ -735,6 +839,8 @@ def copy_files():
         shutil.copyfile(oldpath + "/" + filename, mypath + "/" + filename)
       print "Copied " + filename + "!"
   elif "1500" in path_phase:
+    print "Skipping copying of init files..."
+  elif "e" in path_phase:
     print "Skipping copying of init files..."
   return
 
@@ -758,6 +864,13 @@ for path_run in array_runs:
                       "-init-" + "R" + str(path_run).zfill(2) + \
                       "/" + " " + mypath + "/", \
                       shell=True)
+    elif "e" in path_phase:
+      print "Copying 1500 version..."
+      subprocess.call("cp -r " + path_letter + \
+                      "-" + path_desc + \
+                      "-1500-" + "R" + str(path_run).zfill(2) + \
+                      "/" + " " + mypath + "/", \
+                      shell=True)
     elif "init" in path_phase:
       print "Folder created!"
       os.makedirs(mypath)
@@ -770,6 +883,9 @@ for path_run in array_runs:
   
   if server in ["jade", "garnet", "nyx"]:
     write_pbs()
+
+  if "e" in path_phase:
+    write_SEE()
   
   write_pic()
   copy_files()
