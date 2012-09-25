@@ -426,15 +426,15 @@ elif "DSA" in data_set:
                                 1.07E+014,\
                                 1.02E+014,\
                                 1.07E+014])
-  array_W_SEE_EP = numpy.array([1.00,\
+  array_W_SEE_EP = numpy.array([1.00*40,\
                                 2.69,\
-                                2.61,\
-                                4.03,\
-                                5.60,\
-                                9.08,\
-                                8.78,\
-                                8.30,\
-                                8.78])*1e-13
+                                2.61/2,\
+                                4.03/4,\
+                                5.60/8,\
+                                9.08/16,\
+                                8.78/32,\
+                                8.30/64,\
+                                8.78/128])*1e-13
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
