@@ -74,8 +74,7 @@ array_files = ["oxford.dat",\
                "grid.ngp",\
                "scatter.xexe",\
                "Qen.dat",\
-               "link.dat",\
-               "waitSEE.dat"]
+               "link.dat"]
 
 ## Make sure enough runs/skips occur
 ii = 0
@@ -386,17 +385,17 @@ elif "DSB" in data_set:
                          11.55,\
                          9.59,\
                          7.26])*1e-9
-  array_Wspec = numpy.array([10.,\
-                             10.,\
-                             9.9,\
-                             9.9,\
-                             9.7,\
-                             9.5,\
-                             8.5,\
-                             7.8,\
-                             6.9,\
-                             5.7,\
-                             4.3])*1e-8/W_offset*50.0
+  array_Wspec = numpy.array([10.*10,\
+                             10.*2,\
+                             9.9/1.2,\
+                             9.9/3,\
+                             9.7/6,\
+                             9.5/10,\
+                             8.5/30,\
+                             7.8/50,\
+                             6.9/90,\
+                             5.7/100,\
+                             4.3/120])*1e-8/W_offset*50.0
 elif "DSA" in data_set:
   array_I = numpy.array([17.727,\
                          17.357,\
@@ -416,28 +415,36 @@ elif "DSA" in data_set:
                              7.6/320,\
                              7.2/640,\
                              4.6/1280])*1e-8/W_offset*50.0*10.0
-  # PNG
-  array_G_SEE_EP = numpy.array([1.22E+013,\
-                                3.29E+013,\
-                                3.19E+013,\
-                                4.92E+013,\
-                                6.85E+013,\
-                                1.11E+014,\
-                                1.07E+014,\
-                                1.02E+014,\
-                                1.07E+014])
-  array_W_SEE_EP = numpy.array([1.00*40,\
-                                2.69,\
-                                2.61/2,\
-                                4.03/4,\
-                                5.60/8,\
-                                9.08/16,\
-                                8.78/32,\
-                                8.30/64,\
-                                8.78/128])*1e-13
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
+
+
+# PNG DEBUG
+# Need to get rid of these dummy variables
+
+#array_G_SEE_EP = 1.0e+13
+#array_W_SEE_EP = 1.0e-13
+
+array_G_SEE_EP = numpy.array([3.70E+09,\
+                              1.48E+11,\
+                              2.69E+11,\
+                              6.21E+11,\
+                              9.95E+11,\
+                              1.36E+12,\
+                              1.92E+12,\
+                              2.95E+12,\
+                              5.53E+12])
+array_W_SEE_EP = numpy.array([1.00*40/1000/1.25,\
+                              2.69/100,\
+                              2.61/50/2,\
+                              4.03/28/5,\
+                              5.60/48/4,\
+                              9.08/80/4,\
+                              8.78/128/2,\
+                              8.30/192/1.2,\
+                              8.78/256/1.2])*1e-12
+
 
 if "DSD" in data_set:
   array_P = numpy.array([1.53E-02,\
@@ -514,7 +521,7 @@ elif "DSB" in data_set:
                          4.5E+10,\
                          6.7E+10,\
                          1.0E+11,\
-                         1.5E+11])
+                         1.5E+11])*2.0
 elif "DSA" in data_set:
   array_P = numpy.array([2.00E-03,\
                          8.06E-02,\
