@@ -36,7 +36,7 @@ elif "1500" in path_phase:
     queue_time = "04:00:00"
   elif "nyx" in server:
     queue_time = "24:00:00"
-elif "e" in path_phase:
+elif path_phase in ["EP", "IC"]:
   if server in ["jade", "garnet"]:
     queue_time = "04:00:00"
   elif "nyx" in server:
@@ -69,7 +69,6 @@ toppath = os.getcwd()
 oldpath = path_letter + "-00-container"
 array_files = ["oxford.dat",\
                "spec.dat",\
-               "wall.dat",\
                "grid.unf",\
                "grid.ngp",\
                "scatter.xexe",\
@@ -421,29 +420,96 @@ else:
 
 
 # PNG DEBUG
-# Need to get rid of these dummy variables
+# DSA
 
-#array_G_SEE_EP = 1.0e+13
-#array_W_SEE_EP = 1.0e-13
+if "DSA" in data_set:
+  array_G_SEE_EP = numpy.array([3.70E+09,\
+                                1.48E+11,\
+                                2.69E+11,\
+                                6.21E+11,\
+                                9.95E+11,\
+                                1.36E+12,\
+                                1.92E+12,\
+                                2.95E+12,\
+                                5.53E+12])
 
-array_G_SEE_EP = numpy.array([3.70E+09,\
-                              1.48E+11,\
-                              2.69E+11,\
-                              6.21E+11,\
-                              9.95E+11,\
-                              1.36E+12,\
-                              1.92E+12,\
-                              2.95E+12,\
-                              5.53E+12])
-array_W_SEE_EP = numpy.array([1.00*40/1000/1.25,\
-                              2.69/100,\
-                              2.61/50/2,\
-                              4.03/28/5,\
-                              5.60/48/4,\
-                              9.08/80/4,\
-                              8.78/128/2,\
-                              8.30/192/1.2,\
-                              8.78/256/1.2])*1e-12
+  array_W_SEE_EP = numpy.array([1.00*40/1000/1.25,\
+                                2.69/100,\
+                                2.61/50/2,\
+                                4.03/28/5,\
+                                5.60/48/4,\
+                                9.08/80/4,\
+                                8.78/128/2,\
+                                8.30/192/1.2,\
+                                8.78/256/1.2])*1e-12
+
+  array_G_SEE_IC = numpy.array([4.80E+09,\
+                                9.02E+10,\
+                                1.54E+11,\
+                                2.53E+11,\
+                                3.04E+11,\
+                                3.36E+11,\
+                                3.65E+11,\
+                                3.50E+11,\
+                                1.43E+11])
+
+  array_W_SEE_IC = numpy.array([1.00*40/1000/1.25*2.0,\
+                                2.69/100,\
+                                2.61/50/2,\
+                                4.03/28/5/1.5,\
+                                5.60/48/4/2,\
+                                9.08/80/4/2.5,\
+                                8.78/128/2/3,\
+                                8.30/192/1.2/4,\
+                                8.78/256/1.2/20])*1e-11
+elif "DSB" in data_set:
+  array_G_SEE_EP = numpy.array([1.00E+09,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+12,\
+                                1.00E+12,\
+                                1.00E+12,\
+                                1.00E+12,\
+                                1.00E+12,\
+                                1.00E+12])
+
+  array_W_SEE_EP = numpy.array([1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00])*1e-12
+
+  array_G_SEE_IC = numpy.array([1.00E+09,\
+                                1.00E+10,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11,\
+                                1.00E+11])
+
+  array_W_SEE_IC = numpy.array([1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00])*1e-12
 
 
 if "DSD" in data_set:
@@ -586,7 +652,7 @@ def write_dsmc():
         "100000000  ! Interval: Particle domain decompositon\n",\
         "1E-20      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
-  elif "e" in path_phase:
+  elif path_phase in ["EP", "IC"]:
     init_text = ["",\
         "3.0e-12    ! Reference time step\n",\
         "%.1e" % array_W[ii] + "    ! 1.5e9 Reference particle weight (Nreal/Nmodel)\n",\
@@ -624,11 +690,46 @@ def write_flow():
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
       "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_W_SEE_EP[ii] + "  ! e-\n"]
-  elif "e" in path_phase:
+  elif "EP" in path_phase:
     init_text = ["",\
       "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
       "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
       "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_W_SEE_EP[ii] + "  ! e-\n"]
+  elif "IC" in path_phase:
+    init_text = ["",\
+      "0.     0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_nn[ii] + " 1.0 ! Xe\n",\
+      "46900. 0. 0. 298. 298. 298. 298. 298. " + "%.2e" % array_ni[ii] + " %.1e" % array_Wspec[ii] + "  ! Xe+\n",\
+      "0.     0. 0. 298. 298. 298. 298. 298. 0.00e+00 %.1e" % array_W_SEE_IC[ii] + "  ! e-\n"]
+
+  FILE.writelines(init_text)
+  FILE.close()
+  print filename + " created!"
+  return
+
+###########################
+## Write SEE.dat
+##########################
+def write_wall():
+  filename = "wall.dat"
+
+  PATH = mypath + "/" + filename
+  FILE = open(PATH,"w")
+ 
+  if "EP" in path_phase:
+    init_text = ["",\
+      "300.0 1.0 0.0 1 ! EP\n",\
+      "300.0 1.0 0.0 0 ! IC\n",\
+      "300.0 1.0 0.0 0 ! UP\n"]
+  elif "IC" in path_phase:
+    init_text = ["",\
+      "300.0 1.0 0.0 0 ! EP\n",\
+      "300.0 1.0 0.0 1 ! IC\n",\
+      "300.0 1.0 0.0 0 ! UP\n"]
+  else:
+    init_text = ["",\
+      "300.0 1.0 0.0 0 ! EP\n",\
+      "300.0 1.0 0.0 0 ! IC\n",\
+      "300.0 1.0 0.0 0 ! UP\n"]
 
   FILE.writelines(init_text)
   FILE.close()
@@ -644,11 +745,16 @@ def write_SEE():
   PATH = mypath + "/" + filename
   FILE = open(PATH,"w")
  
-  if "e" in path_phase:
+  if "EP" in path_phase:
     init_text = ["",\
       "1 0.0\n",\
       "2 0.0\n",\
       "3 " + "%.2e" % array_G_SEE_EP[ii] + "\n"]
+  elif "IC" in path_phase:
+    init_text = ["",\
+      "1 0.0\n",\
+      "2 0.0\n",\
+      "3 " + "%.2e" % array_G_SEE_IC[ii] + "\n"]
   else:
     print "ERROR: SEE.dat should only be called for e run!"
     quit()
@@ -741,7 +847,7 @@ def write_pbs():
     else:
       print "ERROR: Can't write pbs.sh for that server!"
       quit()
-  elif "e" in path_phase:
+  elif path_phase in ["EP", "IC"]:
     if "nyx" in server:
       init_text = ["",\
         "#!/bin/sh\n",\
@@ -794,9 +900,8 @@ def write_pic():
     PATH = mypath + "/" + filename
     FILE = open(PATH,"w")
     init_text = ["",\
-        "$PLASMABCS 7\n",\
+        "$PLASMABCS 6\n",\
         "-4 2 0.0 0	0.0	0	0.0	! outflow\n",\
-        "-1 1 0.0 0	0.0	0	0.0	! EP emitter\n",\
         "-1 1 0.0 0	0.0	0	0.0	! EP \n",\
         "-1 1 "+voltage+".0 0	0.0	0	0.0	! IC\n",\
         "-1 1 0.0 0	0.0	0	0.0	! UP\n",\
@@ -824,9 +929,7 @@ def write_pic():
     FILE.writelines(init_text)
     FILE.close()
     print filename + " created!"
-  elif "1500" in path_phase:
-    print "Skipping " + filename + "..."
-  elif "e" in path_phase:
+  elif path_phase in ["1500", "EP", "IC"]:
     print "Skipping " + filename + "..."
 
   return
@@ -845,9 +948,7 @@ def copy_files():
       else:
         shutil.copyfile(oldpath + "/" + filename, mypath + "/" + filename)
       print "Copied " + filename + "!"
-  elif "1500" in path_phase:
-    print "Skipping copying of init files..."
-  elif "e" in path_phase:
+  elif path_phase in ["1500", "EP", "IC"]:
     print "Skipping copying of init files..."
   return
 
@@ -871,7 +972,7 @@ for path_run in array_runs:
                       "-init-" + "R" + str(path_run).zfill(2) + \
                       "/" + " " + mypath + "/", \
                       shell=True)
-    elif "e" in path_phase:
+    elif path_phase in ["EP", "IC"]:
       print "Copying 1500 version..."
       subprocess.call("cp -r " + path_letter + \
                       "-" + path_desc + \
@@ -887,11 +988,12 @@ for path_run in array_runs:
 
   write_dsmc()
   write_flow()
+  write_wall()
   
   if server in ["jade", "garnet", "nyx"]:
     write_pbs()
 
-  if "e" in path_phase:
+  if path_phase in ["EP", "IC"]:
     write_SEE()
   
   write_pic()
