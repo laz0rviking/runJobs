@@ -115,7 +115,9 @@ Ai = numpy.pi*ri*ri
 ## DSC (x,y,z)
 ## DSB (t-v)
 if "DSD" in data_set:
+  
   if voltage == "-10":
+    
     array_I = numpy.array([12.440,\
                            12.289,\
                            12.088,\
@@ -128,19 +130,22 @@ if "DSD" in data_set:
                            7.615,\
                            5.205,\
                            4.160])*1e-9
-    array_Wspec = numpy.array([1.0E-07,\
-                               9.9E-08,\
-                               9.7E-08,\
-                               9.4E-08,\
-                               9.1E-08,\
-                               8.7E-08,\
-                               8.3E-08,\
-                               7.9E-08,\
-                               6.6E-08,\
-                               6.1E-08,\
-                               4.2E-08,\
-                               3.3E-08])/W_offset
+    
+    array_Wspec = numpy.array([10.*52,\
+                               9.9*16,\
+                               9.7*8,\
+                               9.4*4.6,\
+                               9.1*2.7,\
+                               8.7*1.9,\
+                               8.3*1.6,\
+                               7.9*1.2,\
+                               6.6*0.67,\
+                               6.1*0.55,\
+                               4.2*0.32,\
+                               3.3*0.26])/W_offset*1e-8
+  
   elif voltage == "00":
+    
     array_I = numpy.array([12.194,\
                            11.974,\
                            11.681,\
@@ -153,19 +158,22 @@ if "DSD" in data_set:
                            5.851,\
                            3.311,\
                            2.368])*1e-9
-    array_Wspec = numpy.array([1.0E-07,\
-                               9.8E-08,\
-                               9.6E-08,\
-                               9.2E-08,\
-                               8.6E-08,\
-                               8.1E-08,\
-                               7.6E-08,\
-                               7.1E-08,\
-                               5.4E-08,\
-                               4.8E-08,\
-                               2.7E-08,\
-                               1.9E-08])/W_offset
+    
+    array_Wspec = numpy.array([10.*50,\
+                               9.8*15,\
+                               9.6*8.0,\
+                               9.2*4.5,\
+                               8.6*2.7,\
+                               8.1*2.0,\
+                               7.6*1.5,\
+                               7.1*1.2,\
+                               5.4*0.6,\
+                               4.8*0.5,\
+                               2.7*0.3,\
+                               1.9*0.25])/W_offset*1e-8
+  
   elif voltage == "10":
+    
     array_I = numpy.array([14.130,\
                            13.250,\
                            12.146,\
@@ -178,19 +186,22 @@ if "DSD" in data_set:
                            1.065,\
                            0.143,\
                            0.044])*1e-9
-    array_Wspec = numpy.array([1.0E-07,\
-                               9.4E-08,\
-                               8.6E-08,\
-                               7.4E-08,\
-                               6.0E-08,\
-                               4.8E-08,\
-                               3.8E-08,\
-                               2.9E-08,\
-                               1.2E-08,\
-                               7.5E-09,\
-                               1.0E-09,\
-                               3.1E-10])/W_offset
+    
+    array_Wspec = numpy.array([10.*58,\
+                               9.4*18,\
+                               8.6*9.3,\
+                               7.4*5.2,\
+                               6.0*3.2,\
+                               4.8*2.2,\
+                               3.8*1.8,\
+                               2.9*1.4,\
+                               1.2*0.7,\
+                               .75*0.6,\
+                               .10*0.4,\
+                               .031*0.3])/W_offset*1e-8
+  
   elif voltage == "20":
+    
     array_I = numpy.array([17.388,\
                            15.878,\
                            14.043,\
@@ -203,6 +214,7 @@ if "DSD" in data_set:
                            0.451,\
                            0.027,\
                            0.005])*1e-9
+    
     array_Wspec = numpy.array([1.0E-07,\
                                9.1E-08,\
                                8.1E-08,\
@@ -215,11 +227,16 @@ if "DSD" in data_set:
                                2.6E-09,\
                                1.5E-10,\
                                2.9E-11])/W_offset
+  
   else:
+    
     print "ERROR: can't find input conditions for that voltage"
     quit()
+
 elif "DSC" in  data_set:
+
   if voltage == "20":
+
     array_I = numpy.array([5.292,\
                            4.314,\
                            3.708,\
@@ -232,6 +249,7 @@ elif "DSC" in  data_set:
                            1.108,\
                            0.912,\
                            0.638])*1e-9
+
     array_Wspec = numpy.array([10.,\
                                8.2,\
                                7.0,\
@@ -244,7 +262,9 @@ elif "DSC" in  data_set:
                                2.1,\
                                1.7,\
                                1.2])*1e-8/W_offset
+
   elif voltage == "10":
+
     array_I = numpy.array([5.121,\
                            4.225,\
                            3.671,\
@@ -257,19 +277,22 @@ elif "DSC" in  data_set:
                            1.292,\
                            1.112,\
                            0.861])*1e-9
-    array_Wspec = numpy.array([10.,\
-                               8.3,\
-                               7.2,\
-                               6.3,\
-                               5.6,\
-                               4.7,\
-                               3.9,\
-                               3.4,\
-                               3.0,\
-                               2.5,\
-                               2.2,\
-                               1.7])*1e-8/W_offset
+
+    array_Wspec = numpy.array([10.*4.5,\
+                               8.3*2.2,\
+                               7.2*1.6,\
+                               6.3*1.1,\
+                               5.6/1.1,\
+                               4.7/1.5,\
+                               3.9/2,\
+                               3.4/2.5,\
+                               3.0/3,\
+                               2.5/3.7,\
+                               2.2/4,\
+                               1.7/5])*1e-8/W_offset # PNG
+
   elif voltage == "05":
+
     array_I = numpy.array([5.349,\
                            4.511,\
                            3.992,\
@@ -282,6 +305,7 @@ elif "DSC" in  data_set:
                            1.765,\
                            1.597,\
                            1.363])*1e-9
+
     array_Wspec = numpy.array([10.,\
                                8.4,\
                                7.5,\
@@ -294,7 +318,9 @@ elif "DSC" in  data_set:
                                3.3,\
                                3.0,\
                                2.5])*1e-8/W_offset
+
   elif voltage == "00":
+
     array_I = numpy.array([6.922,\
                            6.610,\
                            6.302,\
@@ -307,19 +333,22 @@ elif "DSC" in  data_set:
                            3.268,\
                            2.925,\
                            2.443])*1e-9
-    array_Wspec = numpy.array([10.,\
-                               9.5,\
-                               9.1,\
-                               8.6,\
+
+    array_Wspec = numpy.array([10.*6,\
+                               9.5*3,\
+                               9.1*2,\
+                               8.6*1.3,\
                                8.1,\
-                               7.3,\
-                               6.5,\
-                               5.9,\
-                               5.4,\
-                               4.7,\
-                               4.2,\
-                               3.5])*1e-8/W_offset
+                               7.3/1.2,\
+                               6.5/1.5,\
+                               5.9/2,\
+                               5.4/2,\
+                               4.7/3,\
+                               4.2/3.1,\
+                               3.5/3.2])*1e-8/W_offset
+
   elif voltage == "-05":
+
     array_I = numpy.array([7.564,\
                            7.265,\
                            6.969,\
@@ -332,6 +361,7 @@ elif "DSC" in  data_set:
                            3.926,\
                            3.564,\
                            3.045])*1e-9
+
     array_Wspec = numpy.array([10.,\
                                9.6,\
                                9.1,\
@@ -344,7 +374,9 @@ elif "DSC" in  data_set:
                                5.2,\
                                4.7,\
                                4.0])*1e-8/W_offset
+
   elif voltage == "-10":
+
     array_I = numpy.array([7.329,\
                            7.081,\
                            6.834,\
@@ -357,22 +389,26 @@ elif "DSC" in  data_set:
                            4.187,\
                            3.854,\
                            3.370])*1e-9
-    array_Wspec = numpy.array([10.,\
-                               9.7,\
-                               9.3,\
-                               9.0,\
-                               8.6,\
+
+    array_Wspec = numpy.array([10.*6.5,\
+                               9.7*3.5,\
+                               9.3*2.5,\
+                               9.0*1.5,\
+                               8.6*1.2,\
                                7.9,\
-                               7.3,\
-                               6.8,\
-                               6.3,\
-                               5.7,\
-                               5.3,\
-                               4.6])*1e-8/W_offset
+                               7.3/1.5,\
+                               6.8/1.8,\
+                               6.3/2,\
+                               5.7/2.8,\
+                               5.3/2,\
+                               4.6/3.1])*1e-8/W_offset #PNG tune this
+
   else:
     print "ERROR: Can't find input conditions for that voltage!"
     quit()
+
 elif "DSB" in data_set:
+
   array_I = numpy.array([16.73,\
                          16.70,\
                          16.63,\
@@ -384,6 +420,7 @@ elif "DSB" in data_set:
                          11.55,\
                          9.59,\
                          7.26])*1e-9
+
   array_Wspec = numpy.array([10.*10,\
                              10.*2,\
                              9.9/1.2,\
@@ -395,7 +432,9 @@ elif "DSB" in data_set:
                              6.9/90,\
                              5.7/100,\
                              4.3/120])*1e-8/W_offset*50.0
+
 elif "DSA" in data_set:
+  
   array_I = numpy.array([17.727,\
                          17.357,\
                          17.053,\
@@ -405,6 +444,7 @@ elif "DSA" in data_set:
                          13.418,\
                          12.689,\
                          8.108])*1e-9
+
   array_Wspec = numpy.array([10.,\
                              9.8/10,\
                              9.6/20,\
@@ -414,15 +454,17 @@ elif "DSA" in data_set:
                              7.6/320,\
                              7.2/640,\
                              4.6/1280])*1e-8/W_offset*50.0*10.0
+
 else:
+  
   print "ERROR: Can't find that Data Set!"
   quit()
 
 
-# PNG DEBUG
-# DSA
+# SEE params
 
 if "DSA" in data_set:
+  
   array_G_SEE_EP = numpy.array([3.70E+09,\
                                 1.48E+11,\
                                 2.69E+11,\
@@ -462,7 +504,10 @@ if "DSA" in data_set:
                                 8.78/128/2/3,\
                                 8.30/192/1.2/4,\
                                 8.78/256/1.2/20])*1e-11
+
 elif "DSB" in data_set:
+  # Dummy
+  
   array_G_SEE_EP = numpy.array([1.00E+09,\
                                 1.00E+11,\
                                 1.00E+11,\
@@ -511,7 +556,177 @@ elif "DSB" in data_set:
                                 1.00,\
                                 1.00])*1e-12
 
+elif "DSC" in data_set:
 
+  if voltage == "-10":
+  
+    # Dummy
+    
+    array_G_SEE_EP = numpy.array([0.13,\
+                                  0.25,\
+                                  0.38,\
+                                  0.53,\
+                                  0.66,\
+                                  0.93,\
+                                  1.24,\
+                                  1.50,\
+                                  1.73,\
+                                  2.08,\
+                                  2.39,\
+                                  2.83])*1e12
+
+    array_W_SEE_EP = numpy.array([1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00])/30*1e-12
+
+    array_G_SEE_IC = numpy.array([0.592,\
+                                  0.86,\
+                                  1.13,\
+                                  1.19,\
+                                  1.34,\
+                                  1.50,\
+                                  1.54,\
+                                  1.61,\
+                                  1.59,\
+                                  1.43,\
+                                  3.15,\
+                                  3.15])*1e10
+
+    array_W_SEE_IC = numpy.array([1.00*5.0,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00])/100/3000*1e-9
+
+  if voltage == "00":
+  
+    # Dummy
+
+    array_G_SEE_EP = numpy.array([0.13,\
+                                  0.25,\
+                                  0.38,\
+                                  0.53,\
+                                  0.66,\
+                                  0.93,\
+                                  1.24,\
+                                  1.50,\
+                                  1.73,\
+                                  2.08,\
+                                  2.39,\
+                                  2.83])*1e12
+
+    array_W_SEE_EP = numpy.array([1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00])/30*1e-12
+
+    array_G_SEE_IC = numpy.array([0.592,\
+                                  0.86,\
+                                  1.13,\
+                                  1.19,\
+                                  1.34,\
+                                  1.50,\
+                                  1.54,\
+                                  1.61,\
+                                  1.59,\
+                                  1.43,\
+                                  3.15,\
+                                  3.15])*1e10
+
+    array_W_SEE_IC = numpy.array([1.00*5.0,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00,\
+                                  1.00])/100/3000*1e-9
+
+elif "DSD" in data_set:
+  # Dummy
+  
+  array_G_SEE_EP = numpy.array([0.33,\
+                                0.25,\
+                                0.38,\
+                                0.53,\
+                                0.53,\
+                                0.66,\
+                                0.93,\
+                                1.24,\
+                                1.73,\
+                                2.08,\
+                                2.39,\
+                                2.83])*1e12
+
+  array_W_SEE_EP = numpy.array([1.00*2,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00])/30*1e-12
+
+  array_G_SEE_IC = numpy.array([1.32,\
+                                1.77,\
+                                2.09,\
+                                2.45,\
+                                2.50,\
+                                2.86,\
+                                3.05,\
+                                2.97,\
+                                2.97,\
+                                2.66,\
+                                2.65,\
+                                2.35])*1e9
+
+  array_W_SEE_IC = numpy.array([1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00,\
+                                1.00])/100/3000*1e-9
+
+
+# Pressures ad W_ref's
 if "DSD" in data_set:
   array_P = numpy.array([1.53E-02,\
                          4.93E-02,\
@@ -537,8 +752,10 @@ if "DSD" in data_set:
                          2.3E+11,\
                          2.7E+11,\
                          4.8E+11,\
-                         6.0E+11])*2.0
+                         6.0E+11])*2.0/4.0
+
 elif "DSC" in data_set:
+  
   array_P = numpy.array([7.00e-2,\
                          1.33e-1,\
                          1.99e-1,\
@@ -563,8 +780,10 @@ elif "DSC" in data_set:
                          1.3e+9,\
                          1.6e+9,\
                          1.8e+9,\
-                         2.1e+9])*10*3*3
+                         2.1e+9])*10*3*3/1.25 *2.0 # PNG REDUCED AGAIN
+
 elif "DSB" in data_set:
+  
   array_P = numpy.array([2.07E-03,\
                          9.61E-03,\
                          2.45E-02,\
@@ -588,7 +807,9 @@ elif "DSB" in data_set:
                          6.7E+10,\
                          1.0E+11,\
                          1.5E+11])*2.0
+
 elif "DSA" in data_set:
+  
   array_P = numpy.array([2.00E-03,\
                          8.06E-02,\
                          1.47E-01,\

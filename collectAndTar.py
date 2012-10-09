@@ -145,5 +145,5 @@ for path_run in array_runs:
   ii += 1
   print ""
 
-subprocess.call("tar -cvf "+path_letter+"-transfer.tar "+collect_folder, shell=True)
+subprocess.call("tar -cvf "+path_letter+"-"+path_desc+"-transfer.tar "+collect_folder, shell=True)
 

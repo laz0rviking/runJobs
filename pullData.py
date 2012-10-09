@@ -135,15 +135,15 @@ print "Pulling on \"" + path_letter + "\"!"
 #  scp_out = path_letter+"-00-layfiles/"+file_name+"-"+mypath+".dat"
 #  subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 
-file_name = path_letter+"-transfer.tar"
-scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+file_name+"\""
-scp_out = path_letter+"-00-layfiles/"+file_name
+file_name = path_letter+"-"+path_desc+"-transfer"
+scp_in = "\""+user_name+"@"+server_name+":"+path_name+"/"+file_name+".tar\""
+scp_out = path_letter+"-00-layfiles/"+file_name+".tar"
 subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 os.chdir(path_letter+"-00-layfiles/")
-subprocess.call("tar xvf "+path_letter+"-transfer.tar", shell=True)
-subprocess.call("mv "+path_letter+"-transfer/* .", shell=True)
-subprocess.call("rm -r "+path_letter+"-transfer/", shell=True)
-subprocess.call("rm "+path_letter+"-transfer.tar", shell=True)
+subprocess.call("tar xvf "+file_name+".tar", shell=True)
+subprocess.call("mv "+file_name+"/* .", shell=True)
+subprocess.call("rm -r "+file_name+"/", shell=True)
+subprocess.call("rm "+file_name+".tar", shell=True)
 os.chdir(toppath)
 
 ii += 1
