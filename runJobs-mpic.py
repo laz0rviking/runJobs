@@ -96,6 +96,9 @@ else:
   print "ERROR: Can't find that data set!"
   quit()
 
+#if path_phase in ["EP", "IC"]:
+#  run_last = 1
+
 array_runs = range(run_first,\
                    run_last+1,\
                    run_skip)
@@ -503,7 +506,7 @@ if "DSA" in data_set:
                                 9.08/80/4/2.5,\
                                 8.78/128/2/3,\
                                 8.30/192/1.2/4,\
-                                8.78/256/1.2/20])*1e-11
+                                8.78/256/1.2/20])*1e-11*1.25
 
 elif "DSB" in data_set:
   # Dummy
@@ -560,20 +563,18 @@ elif "DSC" in data_set:
 
   if voltage == "-10":
   
-    # Dummy
-    
-    array_G_SEE_EP = numpy.array([0.13,\
-                                  0.25,\
-                                  0.38,\
-                                  0.53,\
-                                  0.66,\
-                                  0.93,\
-                                  1.24,\
-                                  1.50,\
-                                  1.73,\
-                                  2.08,\
-                                  2.39,\
-                                  2.83])*1e12
+    array_G_SEE_EP = numpy.array([0.0284,\
+                                  0.0578,\
+                                  0.0872,\
+                                  0.1323,\
+                                  0.1884,\
+                                  0.2663,\
+                                  0.3921,\
+                                  0.4890,\
+                                  0.7859,\
+                                  1.2548,\
+                                  0.9327,\
+                                  2.4177])*1e13
 
     array_W_SEE_EP = numpy.array([1.00,\
                                   1.00,\
@@ -588,18 +589,18 @@ elif "DSC" in data_set:
                                   1.00,\
                                   1.00])/30*1e-12
 
-    array_G_SEE_IC = numpy.array([0.592,\
-                                  0.86,\
-                                  1.13,\
-                                  1.19,\
-                                  1.34,\
-                                  1.50,\
-                                  1.54,\
-                                  1.61,\
-                                  1.59,\
-                                  1.43,\
-                                  3.15,\
-                                  3.15])*1e10
+    array_G_SEE_IC = numpy.array([0.5799,\
+                                  0.8603,\
+                                  1.0663,\
+                                  1.1908,\
+                                  1.3218,\
+                                  1.4684,\
+                                  1.5303,\
+                                  1.5441,\
+                                  1.5340,\
+                                  1.4344,\
+                                  1.3533,\
+                                  1.1688])*1e10
 
     array_W_SEE_IC = numpy.array([1.00*5.0,\
                                   1.00,\
@@ -917,6 +918,7 @@ def write_dsmc():
         "100000000  ! Interval: Particle domain decompositon\n",\
         "1E-20      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
+
   elif "1500" in path_phase:
     init_text = ["",\
         "3.0e-08    ! Reference time step\n",\
@@ -930,6 +932,7 @@ def write_dsmc():
         "100000000  ! Interval: Particle domain decompositon\n",\
         "1E-20      ! Roundoff accuracy for the grid\n",\
         "PIC_AXI    ! Dimensionality:2D, AXI,3D\n"]
+
   elif path_phase in ["EP", "IC"]:
     init_text = ["",\
         "3.0e-12    ! Reference time step\n",\
