@@ -141,8 +141,8 @@ scp_out = path_letter+"-00-layfiles/"+file_name+".tar"
 subprocess.call(command_name+" "+scp_in+" "+scp_out, shell=True)
 os.chdir(path_letter+"-00-layfiles/")
 subprocess.call("tar xvf "+file_name+".tar", shell=True)
-subprocess.call("mv "+path_letter+"-00-transfer/* .", shell=True)
-subprocess.call("rm -r "+path_letter+"-00-transfer/", shell=True)
+subprocess.call("mv "+path_letter+"-transfer/* .", shell=True)
+subprocess.call("rm -r "+path_letter+"-transfer/", shell=True)
 subprocess.call("rm "+file_name+".tar", shell=True)
 os.chdir(toppath)
 
