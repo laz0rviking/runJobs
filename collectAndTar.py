@@ -68,7 +68,7 @@ array_runs = range(run_first,\
 #array_runs = [1, 4, 8]
 #array_runs = [2, 3, 5, 6, 7, 9, 10, 11, 12]
 
-collect_folder = path_letter + "-transfer/"
+collect_folder = path_letter+"-"+path_desc+"-transfer/"
 if not os.path.isdir(collect_folder):
   subprocess.call("mkdir " + collect_folder, shell=True)
 #else:
