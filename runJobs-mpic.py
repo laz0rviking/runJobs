@@ -25,6 +25,8 @@ if server not in ["garnet", "nyx", "jade", "arrakis"]:
 path_desc = "b"+voltage
 W_offset = 100
 
+toggleUPoffset = 1
+
 ## Choose simulation phase:
 if "init" in path_phase:
   if server in ["jade", "garnet"]:
@@ -810,7 +812,7 @@ if "DSD" in data_set:
                          2.3E+11,\
                          2.7E+11,\
                          4.8E+11,\
-                         6.0E+11])*2.0/4.0
+                         6.0E+11])*2.0/4.0 *2.0 # PNG REDUCED AGAIN
 
 elif "DSC" in data_set:
   
@@ -864,7 +866,7 @@ elif "DSB" in data_set:
                          4.5E+10,\
                          6.7E+10,\
                          1.0E+11,\
-                         1.5E+11])*2.0
+                         1.5E+11])*2.0 *2.0 # PNG REDUCED AGAIN
 
 elif "DSA" in data_set:
   
@@ -890,6 +892,65 @@ elif "DSA" in data_set:
 else:
   print "ERROR: Can't find that Data Set!"
   quit()
+
+## UP OFFSET
+## Add these to the total input current!
+
+if toggleUPoffset == 1:
+
+  if "DSB" in data_set:
+
+    UPoffset = numpy.array([0.0036,\
+                            0.0185,\
+                            0.0471,\
+                            0.0983,\
+                            0.2849,\
+                            0.5686,\
+                            1.3314,\
+                            1.2109,\
+                            1.0357,\
+                            0.9725,\
+                            0.7324])
+
+    array_I = array_I + UPoffset
+
+  elif "DSC" in data_set and voltage == "10":
+
+    UPoffset = numpy.array([0.3766,\
+                            0.4706,\
+                            0.4900,\
+                            0.5070,\
+                            0.4852,\
+                            0.4547,\
+                            0.4023,\
+                            0.3306,\
+                            0.2769,\
+                            0.2183,\
+                            0.1918,\
+                            0.1431])
+
+    array_I = array_I + UPoffset
+
+  elif "DSD" in data_set and voltage == "10":
+
+    UPoffset = numpy.array([0.2812,\
+                            0.7786,\
+                            1.3072,\
+                            1.8865,\
+                            2.3040,\
+                            2.2468,\
+                            2.2455,\
+                            1.8579,\
+                            0.7133,\
+                            0.4667,\
+                            0.0632,\
+                            0.0177])
+
+    array_I = array_I + UPoffset
+
+  else:
+    print "ERROR: in UP offset!"
+    quit()
 
 array_ni = array_I/(q*vi*Ai)
 T = 298
