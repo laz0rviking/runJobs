@@ -914,7 +914,7 @@ if toggleUPoffset == 1:
 
     array_I = array_I + UPoffset
 
-  elif "DSC" in data_set and voltage == "10":
+  elif "DSC" in data_set:
 
     UPoffset = numpy.array([0.3766,\
                             0.4706,\
@@ -931,7 +931,7 @@ if toggleUPoffset == 1:
 
     array_I = array_I + UPoffset
 
-  elif "DSD" in data_set and voltage == "10":
+  elif "DSD" in data_set:
 
     UPoffset = numpy.array([0.2812,\
                             0.7786,\
