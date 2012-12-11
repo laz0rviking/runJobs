@@ -25,7 +25,7 @@ if server not in ["garnet", "nyx", "jade", "arrakis"]:
 path_desc = "b"+voltage
 W_offset = 100
 
-toggleUPoffset = 1
+toggleUPoffset = 0
 
 ## Choose simulation phase:
 if "init" in path_phase:
@@ -910,7 +910,7 @@ if toggleUPoffset == 1:
                             1.2109,\
                             1.0357,\
                             0.9725,\
-                            0.7324])
+                            0.7324])*1e-9
 
     array_I = array_I + UPoffset
 
@@ -927,7 +927,7 @@ if toggleUPoffset == 1:
                             0.2769,\
                             0.2183,\
                             0.1918,\
-                            0.1431])
+                            0.1431])*1e-9
 
     array_I = array_I + UPoffset
 
@@ -944,7 +944,7 @@ if toggleUPoffset == 1:
                             0.7133,\
                             0.4667,\
                             0.0632,\
-                            0.0177])
+                            0.0177])*1e-9
 
     array_I = array_I + UPoffset
 
@@ -1262,7 +1262,7 @@ def write_pic():
         ""+pot_solver+"                 ! e-method = 0: Boltzmann, 2: detailed model\n",\
         "\n",\
         "$BEGIN_APPLY_E\n",\
-        "60000               ! E_begin: after this step, electricity field is applied\n",\
+        "600000               ! E_begin: after this step, electricity field is applied\n",\
         "\n",\
         "$BEAM_DIVERGENCE\n",\
         ""+beam_div+" 2 1.27e-3         ! divergence angle, 2=y-axis, variation height(inlet)\n",\
